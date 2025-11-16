@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Your Restaurant Name — Our Story</title>
+
+  <!-- 🧠 Apply saved theme instantly before CSS loads -->
+  <script>
+    (function () {
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    })();
+  </script>
+
+  <!-- Fonts & Icons -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="story-page">
+  <!-- Theme Toggle -->
+  <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">
+    <i class="fas fa-moon"></i>
+  </button>
+
+  <!-- Header -->
+  <header class="header" id="mainHeader">
+    <div class="container">
+      <div class="header-content">
+        <!-- Brand (Clickable Logo + Text) -->
+        <div class="brand">
+          <a href="index.html" class="brand-link">
+            <div class="logo">?</div>
+            <div class="brand-text">
+              <h1>Your Restaurant Name</h1>
+              <p>Premium Dining</p>
+            </div>
+          </a>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="desktop-nav">
+          <div class="nav-group">
+            <a href="index.html" class="nav-btn">Menu</a>
+            <a href="specials.html" class="nav-btn">Specials</a>
+            <a href="ambience.html" class="nav-btn">Ambience</a>
+            <a href="story.html" class="nav-btn active">Our Story</a>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========== PHASE 2: ENHANCED STORY PAGE ========== -->
+  <main class="story-page-content">
+
+    <!-- Hero Section -->
+    <section class="story-hero">
+      <div class="hero-content">
+        <h1 class="hero-title breath-animate">Our Legacy Since 1986</h1>
+        <p class="hero-subtitle">Where Culinary Excellence Meets Timeless Tradition</p>
+        <div class="hero-scroll-indicator">
+          <i class="fas fa-chevron-down float-animate"></i>
+        </div>
+      </div>
+    </section>
+
+    <!-- Timeline Section -->
+    <section class="timeline-section">
+      <div class="container">
+        <h2 class="section-title">Our Journey Through Time</h2>
+        <div class="timeline-container">
+
+          <div class="timeline-item stagger-item">
+            <div class="timeline-year">1986</div>
+            <div class="timeline-content glass-card">
+              <h3>The Humble Beginning</h3>
+              <p>Founded with a vision to redefine luxury dining in India. What started as a small 40-seater restaurant
+                quickly became the talk of the town.</p>
+              <img src="images/story/ChatGPT Image Nov 7, 2025, 10_20_01 AM.png" alt="Your Restaurant story"
+                loading="lazy">
+            </div>
+          </div>
+
+          <div class="timeline-item stagger-item">
+            <div class="timeline-year">1995</div>
+            <div class="timeline-content glass-card">
+              <h3>First Michelin Recognition</h3>
+              <p>Our innovative fusion cuisine earned us our first Michelin star, putting Indian fine dining on the
+                global culinary map.</p>
+              <img src="images/story/ChatGPT Image Nov 7, 2025, 07_41_15 AM.png" alt="First Michelin star celebration"
+                loading="lazy">
+            </div>
+          </div>
+
+          <div class="timeline-item stagger-item">
+            <div class="timeline-year">2008</div>
+            <div class="timeline-content glass-card">
+              <h3>Global Expansion</h3>
+              <p>Opened our first international location in Dubai, bringing authentic Indian flavors to the Middle East
+                with contemporary twists.</p>
+              <img src="images/story/ChatGPT Image Nov 7, 2025, 07_42_43 AM.png" alt="Dubai location opening"
+                loading="lazy">
+            </div>
+          </div>
+
+          <div class="timeline-item stagger-item">
+            <div class="timeline-year">2018</div>
+            <div class="timeline-content glass-card">
+              <h3>Sustainability Commitment</h3>
+              <p>Launched our farm-to-table initiative, partnering with local organic farms and implementing zero-waste
+                kitchen practices.</p>
+              <img src="images/story/ChatGPT Image Nov 7, 2025, 07_45_03 AM.png" alt="Sustainable farming partnership"
+                loading="lazy">
+            </div>
+          </div>
+
+          <div class="timeline-item stagger-item">
+            <div class="timeline-year">2024</div>
+            <div class="timeline-content glass-card">
+              <h3>Digital Innovation</h3>
+              <p>Introducing AR menu experiences and AI-powered culinary recommendations while maintaining our
+                traditional values.</p>
+              <img src="images/story/ChatGPT Image Nov 7, 2025, 07_51_02 AM.png" alt="About your restaurant"
+                loading="lazy">
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Founder Story Section -->
+    <section class="founder-story">
+      <div class="container">
+        <div class="founder-content">
+          <div class="founder-image">
+            <img src="images/story/ChatGPT Image Nov 7, 2025, 07_45_03 AM.png" alt="Your Restaurant Founder"
+              loading="lazy">
+            <div class="founder-badge">
+              <span>Founder & Visionary</span>
+            </div>
+          </div>
+          <div class="founder-text">
+            <h2>Founder Name</h2>
+            <p class="founder-quote">"Great food is not just about taste—it's about creating memories that linger long
+              after the last bite. At my restaurant, we don't just serve meals; we craft experiences that celebrate life's
+              precious moments."</p>
+            <div class="founder-details">
+              <p>Quote from founder.</p>
+            </div>
+            <div class="signature">Founder signature</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Values Section -->
+    <section class="values-section">
+      <div class="container">
+        <h2 class="section-title">Our Core Values</h2>
+        <div class="values-grid">
+
+          <div class="value-card stagger-item">
+            <div class="value-icon">⭐</div>
+            <h3>Excellence</h3>
+            <p>Uncompromising quality in every ingredient, every recipe, and every service detail. We believe excellence
+              is a journey, not a destination.</p>
+          </div>
+
+          <div class="value-card stagger-item">
+            <div class="value-icon">❤️</div>
+            <h3>Passion</h3>
+            <p>Driven by genuine love for culinary arts and hospitality. Our team's passion is the secret ingredient in
+              every dish we serve.</p>
+          </div>
+
+          <div class="value-card stagger-item">
+            <div class="value-icon">🌱</div>
+            <h3>Sustainability</h3>
+            <p>Committed to ethical sourcing, reducing our environmental footprint, and supporting local farming
+              communities.</p>
+          </div>
+
+          <div class="value-card stagger-item">
+            <div class="value-icon">🤝</div>
+            <h3>Heritage</h3>
+            <p>Preserving traditional cooking methods while embracing innovation. Honoring our roots while writing our
+              future.</p>
+          </div>
+
+          <div class="value-card stagger-item">
+            <div class="value-icon">👨‍🍳</div>
+            <h3>Innovation</h3>
+            
+          </div>
+
+          <div class="value-card stagger-item">
+            <div class="value-icon">🌟</div>
+            <h3>Community</h3>
+            <p>Building relationships beyond the dining table. We're proud to be part of the communities we serve.</p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="team-section">
+      <div class="container">
+        <h2 class="section-title">Meet Our Culinary Artists</h2>
+        <div class="team-grid">
+
+          <div class="team-member stagger-item">
+            <div class="member-image">
+              <img src="images/story/ChatGPT Image Nov 7, 2025, 07_45_03 AM.png" alt="Executive Chef Anita Sharma" loading="lazy">
+              <div class="member-overlay">
+                <h4>Anita Sharma</h4>
+                <p>Executive Chef</p>
+                <div class="member-specialty">
+                  <span>Modern Indian Fusion</span>
+                </div>
+              </div>
+            </div>
+            <div class="member-info">
+              <h3>Anita Sharma</h3>
+              <p class="member-role">Executive Chef</p>
+              <p class="member-bio">
+                With 15 years of international experience, Chef Anita brings global perspectives to traditional Indian
+                cuisine.
+              </p>
+              <div class="member-signature-dish">
+                <strong>Signature:</strong> Deconstructed Butter Chicken
+              </div>
+            </div>
+          </div>
+
+          <div class="team-member stagger-item">
+            <div class="member-image">
+              <img src="images/story/ChatGPT Image Nov 7, 2025, 07_45_03 AM.png" alt="Head Pastry Chef Rahul Kapoor" loading="lazy">
+              <div class="member-overlay">
+                <h4>Rahul Kapoor</h4>
+                <p>Head Pastry Chef</p>
+                <div class="member-specialty">
+                  <span>Indian-inspired Desserts</span>
+                </div>
+              </div>
+            </div>
+            <div class="member-info">
+              <h3>Rahul Kapoor</h3>
+              <p class="member-role">Head Pastry Chef</p>
+              <p class="member-bio">
+                Trained in Paris, Chef Rahul creates desserts that blend French techniques with Indian flavors.
+              </p>
+              <div class="member-signature-dish">
+                <strong>Signature:</strong> Saffron Crème Brûlée
+              </div>
+            </div>
+          </div>
+
+          <div class="team-member stagger-item">
+            <div class="member-image">
+              <img src="images/story/ChatGPT Image Nov 7, 2025, 07_45_03 AM.png" alt="Head Sommelier Priya Singh" loading="lazy">
+              <div class="member-overlay">
+                <h4>Priya Singh</h4>
+                <p>Head Sommelier</p>
+                <div class="member-specialty">
+                  <span>Wine Pairing Expert</span>
+                </div>
+              </div>
+            </div>
+            <div class="member-info">
+              <h3>Priya Singh</h3>
+              <p class="member-role">Head Sommelier</p>
+              <p class="member-bio">
+                Certified sommelier with expertise in pairing global wines with Indian spices and flavors.
+              </p>
+              <div class="member-specialty">
+                <strong>Expertise:</strong> Indian Wine Pairings
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Awards Section -->
+    <section class="awards-section">
+      <div class="container">
+        <h2 class="section-title">Recognition & Awards</h2>
+        <div class="awards-grid">
+
+          <div class="award-card glass-card stagger-item">
+            <div class="award-icon">🏆</div>
+            <h3>Michelin Star</h3>
+            <p>2010 - Present</p>
+            <span>Excellence in Culinary Arts</span>
+          </div>
+
+          <div class="award-card glass-card stagger-item">
+            <div class="award-icon">⭐</div>
+            <h3>World's 50 Best</h3>
+            <p>Ranked #24, 2023</p>
+            <span>Global Restaurant Awards</span>
+          </div>
+
+          <div class="award-card glass-card stagger-item">
+            <div class="award-icon">🌍</div>
+            <h3>Sustainable Restaurant</h3>
+            <p>Green Star 2022</p>
+            <span>Environmental Excellence</span>
+          </div>
+
+          <div class="award-card glass-card stagger-item">
+            <div class="award-icon">👨‍🍳</div>
+            <h3>Chef of the Year</h3>
+            <p>Anita Sharma, 2023</p>
+            <span>Indian Culinary Awards</span>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Final Quote Section -->
+    <section class="final-quote-section">
+      <div class="container">
+        <div class="quote-content glass-effect">
+          <blockquote class="breath-animate">
+            "Some more quotes."
+          </blockquote>
+          <div class="quote-author">
+            — Owner remarks
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+
+
+
+  <!-- Mobile Navigation -->
+  <nav class="mobile-nav" id="mobileNav">
+    <div class="mobile-nav-content">
+      <a href="index.html" class="nav-item">
+        <i class="fas fa-utensils"></i><span>Menu</span>
+      </a>
+      <a href="specials.html" class="nav-item">
+        <i class="fas fa-star"></i><span>Specials</span>
+      </a>
+      <a href="ambience.html" class="nav-item">
+        <i class="fas fa-camera"></i><span>Ambience</span>
+      </a>
+      <a href="story.html" class="nav-item active">
+        <i class="fas fa-book"></i><span>Our Story</span>
+      </a>
+    </div>
+  </nav>
+
+
+
+
+
+  <!-- Footer -->
+  <footer class="footer v2">
+    <div class="footer-wrapper">
+      <div class="footer-info">
+        <div class="footer-section">
+          <h4>Your Restaurant Name</h4>
+          <p>Premium dining experience with innovative digital menu</p>
+          <div class="social-links">
+            <a href="" target="_blank" aria-label="Instagram">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a href="" target="_blank" aria-label="Facebook">
+              <i class="fab fa-facebook"></i>
+            </a>
+            <a href="" target="_blank" aria-label="Twitter">
+              <i class="fab fa-twitter"></i>
+            </a>
+          </div>
+        </div>
+
+        <div class="footer-section">
+          <h4>Contact</h4>
+          <p>📍 your address</p>
+          <p>📞 your phone number</p>
+          <p>✉️ your email</p>
+        </div>
+
+        <div class="footer-section">
+          <h4>Hours</h4>
+          <p>Mon–Fri: 11:00 – 22:00</p>
+          <p>Weekend: 10:00 – 23:00</p>
+        </div>
+      </div>
+
+      <div class="footer-map">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3672.009429628626!2d72.50858677524187!3d23.021561316213507!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e84f9a5b7ad01%3A0xbddbeee0c35e3b0d!2sThe%20Leela%20Gandhinagar!5e0!3m2!1sen!2sin!4v1731423212292!5m2!1sen!2sin"
+          width="100%" height="260" style="border:0;" allowfullscreen="" loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; Your Restaurant. All rights reserved.</p>
+      <a href="https://wa.me/918377861214?text=Hi%2C%20I'm%20interested%20in%20your%20Digital%20Menu.%20Can%20we%20talk%3F"
+        target="_blank" rel="noopener" class="visuplate">
+        TheVisuplate
+      </a>
+
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="story.js"></script>
+
+  <!-- Story Page Specific Script -->
+  <script>
+    // Timeline scroll animation
+    const timelineItems = document.querySelectorAll('.timeline-item');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.3 });
+
+    timelineItems.forEach(item => {
+      observer.observe(item);
+    });
+
+
+
+    // Gesture navigation
+    let startX = 0;
+    document.addEventListener('touchstart', (e) => {
+      startX = e.touches[0].clientX;
+    });
+
+    document.addEventListener('touchend', (e) => {
+      const endX = e.changedTouches[0].clientX;
+      const diffX = startX - endX;
+
+      if (Math.abs(diffX) > 50) { // Minimum swipe distance
+        if (diffX > 0) {
+          // Swipe left - go to ambience page
+          window.location.href = 'ambience.html';
+        } else {
+          // Swipe right - go to specials page
+          window.location.href = 'specials.html';
+        }
+      }
+    });
+
+    // ✅ Smart Gesture Navigation (prevents accidental page switches)
+    if (window.innerWidth <= 768) {
+      let startX = 0, startY = 0;
+
+      document.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+      });
+
+      document.addEventListener('touchend', (e) => {
+        const endX = e.changedTouches[0].clientX;
+        const endY = e.changedTouches[0].clientY;
+
+        const diffX = startX - endX;
+        const diffY = startY - endY;
+
+        // ✅ Only count as swipe if it's mostly horizontal
+        if (Math.abs(diffX) > 60 && Math.abs(diffX) > Math.abs(diffY) * 1.5) {
+          if (diffX > 0) {
+            // Swipe left → Go to Ambience
+            window.location.href = 'ambience.html';
+          } else {
+            // Swipe right → Go to Specials
+            window.location.href = 'specials.html';
+          }
+        }
+      });
+
+      // ✅ Optional swipe hint (safe check)
+      const hint = document.getElementById('gestureHint');
+      if (hint) {
+        setTimeout(() => {
+          hint.classList.add('show');
+          setTimeout(() => {
+            hint.classList.remove('show');
+          }, 5000);
+        }, 3000);
+      }
+    }
+
+
+
+    // Celebration effect when reaching the end of story
+    const finalQuote = document.querySelector('.final-quote-section');
+    const finalObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          createConfetti();
+        }
+      });
+    }, { threshold: 0.5 });
+
+    finalObserver.observe(finalQuote);
+
+    function createConfetti() {
+      const confettiContainer = document.createElement('div');
+      confettiContainer.className = 'confetti';
+      document.body.appendChild(confettiContainer);
+
+      for (let i = 0; i < 50; i++) {
+        const confetti = document.createElement('div');
+        confetti.className = 'confetti-piece';
+        confetti.style.left = Math.random() * 100 + 'vw';
+        confetti.style.background = getRandomColor();
+        confetti.style.animation = `confetti-drop ${Math.random() * 3 + 2}s ease-out forwards`;
+        confetti.style.animationDelay = Math.random() * 2 + 's';
+        confettiContainer.appendChild(confetti);
+      }
+
+      setTimeout(() => {
+        confettiContainer.remove();
+      }, 5000);
+    }
+
+    function getRandomColor() {
+      const colors = ['var(--primary)', 'var(--secondary)', 'var(--gold)', '#22c55e', '#3b82f6', '#8b5cf6'];
+      return colors[Math.floor(Math.random() * colors.length)];
+    }
+  </script>
+
+
+</body>
+
+</html>

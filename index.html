@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Your Restaurant Name</title>
+  <meta name="description"
+    content="Your Restaurant Name — Luxury multi-language menu with AR previews, advanced filtering, and premium features" />
+  <meta name="theme-color" content="#b76e79" />
+
+  <!-- Fonts & Icons -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- Model Viewer -->
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+</head>
+
+<body>
+  <!-- Theme Toggle -->
+  <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">
+    <i class="fas fa-moon"></i>
+  </button>
+
+  <!-- Loading Screen -->
+  <div id="loadingScreen" class="loading-screen">
+    <div class="loading-content">
+      <div class="logo-loader">
+        <div class="loader-ring"></div>
+        <span>L</span>
+      </div>
+      <p>Preparing your dining experience</p>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="header" id="mainHeader">
+    <div class="container">
+      <div class="header-content">
+        <!-- Mobile Menu Button -->
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        <!-- Brand (Clickable Logo + Text) -->
+        <div class="brand">
+          <a href="index.html" class="brand-link">
+            <div class="logo">?</div>
+            <div class="brand-text">
+              <h1>Your Restaurant Name</h1>
+              <p>Premium Dining</p>
+            </div>
+          </a>
+        </div>
+
+
+        <!-- Desktop Navigation -->
+        <nav class="desktop-nav" id="desktopNav">
+          <div class="nav-group">
+            <a href="index.html" class="nav-btn active">Menu</a>
+            <a href="specials.html" class="nav-btn">Specials</a>
+            <a href="ambience.html" class="nav-btn">Ambience</a>
+            <a href="story.html" class="nav-btn">Our Story</a>
+          </div>
+        </nav>
+
+        <!-- Header Actions -->
+        <div class="header-actions">
+          <!-- Search -->
+          <div class="search-container">
+            <button class="search-btn" id="searchToggle" aria-label="Toggle search">
+              <i class="fas fa-search"></i>
+            </button>
+            <div class="search-expandable" id="searchExpandable">
+              <input type="text" id="searchInput" placeholder="Search dishes, ingredients..." aria-label="Search menu">
+              <button class="search-close" id="searchClose" aria-label="Close search">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Language -->
+          <select id="lang" class="lang-select" aria-label="Select language">
+            <option value="en">EN</option>
+            <option value="fr">FR</option>
+            <option value="es">ES</option>
+            <option value="it">IT</option>
+            <option value="jp">JP</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Advanced Filters -->
+      <div class="advanced-filters" id="advancedFilters">
+        <div class="filter-group">
+          <h4>Dietary</h4>
+          <div class="filter-tags">
+            <button class="filter-tag" data-filter="VEG">
+              <i class="fas fa-leaf"></i>Vegetarian
+            </button>
+            <button class="filter-tag" data-filter="NON_VEG">
+              <i class="fas fa-drumstick-bite"></i>Non-Veg
+            </button>
+            <button class="filter-tag" data-filter="GLUTEN_FREE">
+              <i class="fas fa-wheat"></i>Gluten-Free
+            </button>
+            <button class="filter-tag" data-filter="NUTS_FREE">
+              <i class="fas fa-peanut"></i>Nut-Free
+            </button>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <h4>Spice Level</h4>
+          <div class="spice-filters">
+            <button class="spice-btn" data-spice="0">Mild</button>
+            <button class="spice-btn" data-spice="1">Medium</button>
+            <button class="spice-btn" data-spice="2">Spicy</button>
+            <button class="spice-btn" data-spice="3">Hot</button>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <h4>Price Range</h4>
+          <div class="price-filter">
+            <input type="range" id="priceRange" min="0" max="2000" step="100" value="2000">
+            <span id="priceDisplay">Up to ₹2000</span>
+          </div>
+        </div>
+
+        <button class="clear-filters" id="clearFilters">
+          <i class="fas fa-times"></i>Clear All
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Navigation -->
+  <nav class="mobile-nav" id="mobileNav">
+    <div class="mobile-nav-content">
+      <a href="index.html" class="nav-item active">
+        <i class="fas fa-utensils"></i><span>Menu</span>
+      </a>
+      <a href="specials.html" class="nav-item">
+        <i class="fas fa-star"></i><span>Specials</span>
+      </a>
+      <a href="ambience.html" class="nav-item">
+        <i class="fas fa-camera"></i><span>Ambience</span>
+      </a>
+      <a href="story.html" class="nav-item">
+        <i class="fas fa-book"></i><span>Our Story</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main>
+    <!-- Menu Section -->
+    <section id="menuSection" class="section active">
+      <div class="container">
+        <nav class="category-nav" id="categoryNav">
+          <div class="category-scroll">
+            <!-- Categories injected dynamically -->
+          </div>
+        </nav>
+        <!-- Mobile Search (Visible only on small screens) -->
+        <div class="mobile-search-container">
+          <div class="mobile-search">
+            <input type="text" id="mobileSearchInput" placeholder="Search dishes, ingredients..." />
+            <button id="mobileSearchBtn" aria-label="Search">
+              <i class="fas fa-search"></i>
+            </button>
+          </div>
+        </div>
+
+
+        <div class="menu-grid" id="menuArea"></div>
+
+        <div class="empty-state" id="emptyState" style="display: none;">
+          <i class="fas fa-search"></i>
+          <h3>No items found</h3>
+          <p>Try adjusting your filters or search term</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Image Modal -->
+  <div id="imageModal" class="modal" aria-hidden="true">
+    <div class="modal-backdrop"></div>
+    <div class="modal-container">
+      <div class="modal-content">
+        <button class="modal-close" id="closeImageModal">
+          <i class="fas fa-times"></i>
+        </button>
+
+        <div class="modal-media">
+          <img id="modalImg" src="" alt="" loading="lazy">
+        </div>
+
+        <div class="modal-body">
+          <div class="modal-header">
+            <div class="dietary-badges" id="modalBadges"></div>
+            <h2 id="modalName"></h2>
+            <div class="modal-price" id="modalPrice"></div>
+          </div>
+
+          <p class="modal-desc" id="modalDesc"></p>
+
+          <div class="modal-details">
+            <div class="detail-group">
+              <h4>Ingredients</h4>
+              <p id="modalIngredients"></p>
+            </div>
+          </div>
+
+          <div class="modal-actions">
+            <button class="btn btn-secondary" id="modalAR">
+              <i class="fas fa-cube"></i>View in AR
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AR Modal -->
+  <div id="modelModal" class="modal" aria-hidden="true">
+    <div class="modal-backdrop"></div>
+    <div class="modal-container ar-modal">
+      <div class="modal-content">
+        <button class="modal-close" id="closeModelModal">
+          <i class="fas fa-times"></i>
+        </button>
+
+        <model-viewer id="mv" src="" alt="3D model" camera-controls auto-rotate ar
+          ar-modes="webxr scene-viewer quick-look" ar-scale="auto" shadow-intensity="1"
+          style="width:100%;height:70vh;border-radius:10px;position:relative;">
+          <button slot="ar-button" class="ar-button" id="manualARButton">
+            👓 View in your space
+          </button>
+        </model-viewer>
+      </div>
+    </div>
+  </div>
+
+  <!-- 🎬 Video Modal -->
+  <div id="videoModal" class="modal" aria-hidden="true">
+    <div class="modal-backdrop"></div>
+    <div class="modal-container">
+      <div class="modal-content">
+        <button class="modal-close" id="closeVideoModal">
+          <i class="fas fa-times"></i>
+        </button>
+        <video id="videoPlayer" controls playsinline>
+          <source src="" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Toast -->
+  <div id="toast" class="toast" aria-live="polite"></div>
+
+  <!-- Footer -->
+  <footer class="footer v2">
+    <div class="footer-wrapper">
+      <div class="footer-info">
+        <div class="footer-section">
+          <h4>Your Restaurant Name</h4>
+          <p>Premium dining experience with innovative digital menu</p>
+          <div class="social-links">
+            <a href="" target="_blank" aria-label="Instagram">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a href="" target="_blank" aria-label="Facebook">
+              <i class="fab fa-facebook"></i>
+            </a>
+            <a href="" target="_blank" aria-label="Twitter">
+              <i class="fab fa-twitter"></i>
+            </a>
+          </div>
+        </div>
+
+        <div class="footer-section">
+          <h4>Contact</h4>
+          <p>📍 your address</p>
+          <p>📞 your phone number</p>
+          <p>✉️ your email</p>
+        </div>
+
+        <div class="footer-section">
+          <h4>Hours</h4>
+          <p>Mon–Fri: 11:00 – 22:00</p>
+          <p>Weekend: 10:00 – 23:00</p>
+        </div>
+      </div>
+
+      <div class="footer-map">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3672.009429628626!2d72.50858677524187!3d23.021561316213507!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e84f9a5b7ad01%3A0xbddbeee0c35e3b0d!2sThe%20Leela%20Gandhinagar!5e0!3m2!1sen!2sin!4v1731423212292!5m2!1sen!2sin"
+          width="100%" height="260" style="border:0;" allowfullscreen="" loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; Your Restaurant. All rights reserved.</p>
+      <a href="https://wa.me/918377861214?text=Hi%2C%20I'm%20interested%20in%20your%20Digital%20Menu.%20Can%20we%20talk%3F"
+        target="_blank" rel="noopener" class="visuplate">
+        TheVisuplate
+      </a>
+
+    </div>
+  </footer>
+
+
+
+  <script src="main.js"></script>
+</body>
+
+</html>

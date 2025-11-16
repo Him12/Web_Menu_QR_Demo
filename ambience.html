@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Your Restaurant Name — Ambience</title>
+
+  <!-- 🧠 Apply saved theme instantly before CSS loads -->
+  <script>
+    (function () {
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    })();
+  </script>
+
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="ambience-page">
+  <!-- Theme Toggle -->
+  <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">
+    <i class="fas fa-moon"></i>
+  </button>
+
+  <!-- Header -->
+  <header class="header" id="mainHeader">
+    <div class="container">
+      <div class="header-content">
+        <!-- Brand (Clickable Logo + Text) -->
+        <div class="brand">
+          <a href="index.html" class="brand-link">
+            <div class="logo">?</div>
+            <div class="brand-text">
+              <h1>Your Restaurant Name</h1>
+              <p>Premium Dining</p>
+            </div>
+          </a>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="desktop-nav">
+          <div class="nav-group">
+            <a href="index.html" class="nav-btn">Menu</a>
+            <a href="specials.html" class="nav-btn">Specials</a>
+            <a href="ambience.html" class="nav-btn active">Ambience</a>
+            <a href="story.html" class="nav-btn">Our Story</a>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========== PHASE 3: ENHANCED AMBIENCE PAGE ========== -->
+  <main class="ambience-page-content">
+    
+    <!-- Hero Video Section -->
+    <section class="ambience-hero">
+      <video class="hero-video" autoplay muted loop playsinline poster="images/ambience1.jpeg">
+        <source src="assets/videos/restaurant-ambience-hero.mp4" type="video/mp4">
+        <source src="assets/videos/restaurant-ambience-hero.webm" type="video/webm">
+        <!-- Fallback image -->
+        <img src="images/ambience1.jpeg" alt="Your Restaurant Name Ambience">
+      </video>
+      
+      <div class="hero-overlay">
+        <div class="hero-overlay-content">
+          <h1 class="breath-animate">Experience Your Restaurant Name Atmosphere</h1>
+          <p class="hero-subtitle">Where Every Detail Creates an Unforgettable Dining Journey</p>
+          <!-- <button class="btn btn-primary" onclick="scrollToExperience()">
+            <i class="fas fa-arrow-down"></i> Explore Our Spaces
+          </button> -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Experience Zones Section -->
+    <section class="experience-zones" id="experienceZones">
+      <div class="container">
+        <h2 class="section-title">Our Signature Spaces</h2>
+        <p class="section-subtitle">Each area designed to offer a unique dining experience</p>
+        
+        <div class="zones-grid">
+          
+          <!-- Main Dining -->
+          <div class="zone-card stagger-item">
+            <img src="images/ambience2.jpeg" alt="Main Dining Area" class="zone-image" loading="lazy">
+            <div class="zone-overlay">
+              <h3>Grand Dining Hall</h3>
+              <p>Elegant space with crystal chandeliers and panoramic city views</p>
+              <div class="zone-capacity">
+                <i class="fas fa-users"></i> Up to 120 guests
+              </div>
+            </div>
+            <div class="zone-badge">
+              <i class="fas fa-crown"></i> Premium
+            </div>
+          </div>
+
+          <!-- Outdoor Garden -->
+          <div class="zone-card stagger-item">
+            <img src="images/outdoor.png" alt="Outdoor Garden" class="zone-image" loading="lazy">
+            <div class="zone-overlay">
+              <h3>Secret Garden</h3>
+              <p>Al fresco dining surrounded by exotic plants and water features</p>
+              <div class="zone-capacity">
+                <i class="fas fa-users"></i> Up to 80 guests
+              </div>
+            </div>
+            <div class="zone-badge">
+              <i class="fas fa-leaf"></i> Outdoor
+            </div>
+          </div>
+
+          <!-- Private Rooms -->
+          <div class="zone-card stagger-item">
+            <img src="images/ambience4.jpeg" alt="Private Dining Room" class="zone-image" loading="lazy">
+            <div class="zone-overlay">
+              <h3>Executive Suites</h3>
+              <p>Intimate spaces for business meetings and private celebrations</p>
+              <div class="zone-capacity">
+                <i class="fas fa-users"></i> Up to 30 guests
+              </div>
+            </div>
+            <div class="zone-badge">
+              <i class="fas fa-user-friends"></i> Private
+            </div>
+          </div>
+
+          <!-- Bar & Lounge -->
+          <div class="zone-card stagger-item">
+            <img src="images/ambience6.jpeg" alt="Bar & Lounge" class="zone-image" loading="lazy">
+            <div class="zone-overlay">
+              <h3>Sky Lounge</h3>
+              <p>Sophisticated bar area with live music and crafted cocktails</p>
+              <div class="zone-capacity">
+                <i class="fas fa-users"></i> Up to 60 guests
+              </div>
+            </div>
+            <div class="zone-badge">
+              <i class="fas fa-glass-cheers"></i> Social
+            </div>
+          </div>
+
+          <!-- Chef's Table -->
+          <div class="zone-card stagger-item">
+            <img src="images/cheftable.png" alt="Chef's Table" class="zone-image" loading="lazy">
+            <div class="zone-overlay">
+              <h3>Chef's Gallery</h3>
+              <p>Interactive dining experience with live kitchen viewing</p>
+              <div class="zone-capacity">
+                <i class="fas fa-users"></i> Up to 12 guests
+              </div>
+            </div>
+            <div class="zone-badge">
+              <i class="fas fa-utensils"></i> Interactive
+            </div>
+          </div>
+
+          <!-- Wine Cellar -->
+          <div class="zone-card stagger-item">
+            <img src="images/wine.png" alt="Wine Cellar" class="zone-image" loading="lazy">
+            <div class="zone-overlay">
+              <h3>Vintage Cellar</h3>
+              <p>Exclusive wine tasting room with 5000+ bottle collection</p>
+              <div class="zone-capacity">
+                <i class="fas fa-users"></i> Up to 15 guests
+              </div>
+            </div>
+            <div class="zone-badge">
+              <i class="fas fa-wine-bottle"></i> Exclusive
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Events & Occasions Gallery -->
+    <section class="events-gallery">
+      <div class="container">
+        <h2 class="section-title">Perfect for Every Occasion</h2>
+        <p class="section-subtitle">See how our spaces transform for special events</p>
+        
+        <div class="gallery-filters">
+          <button class="gallery-filter active" data-filter="all">All Events</button>
+          <button class="gallery-filter" data-filter="wedding">Weddings</button>
+          <button class="gallery-filter" data-filter="corporate">Corporate</button>
+          <button class="gallery-filter" data-filter="birthday">Celebrations</button>
+          <button class="gallery-filter" data-filter="private">Private Dining</button>
+        </div>
+        
+        <div class="gallery-grid">
+          
+          <div class="gallery-item" data-category="wedding">
+            <img src="images/ChatGPT Image Nov 6, 2025, 11_22_11 PM.png" alt="Wedding Reception" class="gallery-image" loading="lazy">
+            <div class="gallery-overlay">
+              <h4>Wedding Reception</h4>
+              <p>Elegant celebrations with custom decor</p>
+              <span class="event-capacity">150 Guests</span>
+            </div>
+          </div>
+
+          <div class="gallery-item" data-category="corporate">
+            <img src="images/ChatGPT Image Nov 6, 2025, 11_34_58 PM.png" alt="Corporate Event" class="gallery-image" loading="lazy">
+            <div class="gallery-overlay">
+              <h4>Corporate Gala</h4>
+              <p>Professional setting for business events</p>
+              <span class="event-capacity">200 Guests</span>
+            </div>
+          </div>
+
+          <div class="gallery-item" data-category="birthday">
+            <img src="images/ChatGPT Image Nov 6, 2025, 11_25_46 PM.png" alt="Birthday Celebration" class="gallery-image" loading="lazy">
+            <div class="gallery-overlay">
+              <h4>Birthday Party</h4>
+              <p>Joyful celebrations with personalized themes</p>
+              <span class="event-capacity">80 Guests</span>
+            </div>
+          </div>
+
+          <div class="gallery-item" data-category="private">
+            <img src="images/ChatGPT Image Nov 6, 2025, 11_34_58 PM.png" alt="Private Dinner" class="gallery-image" loading="lazy">
+            <div class="gallery-overlay">
+              <h4>Intimate Dinner</h4>
+              <p>Romantic settings for special moments</p>
+              <span class="event-capacity">20 Guests</span>
+            </div>
+          </div>
+
+          <div class="gallery-item" data-category="wedding">
+            <img src="images/wed.png" alt="Wedding Ceremony" class="gallery-image" loading="lazy">
+            <div class="gallery-overlay">
+              <h4>Garden Wedding</h4>
+              <p>Outdoor ceremonies in our secret garden</p>
+              <span class="event-capacity">100 Guests</span>
+            </div>
+          </div>
+
+          <div class="gallery-item" data-category="corporate">
+            <img src="images/ChatGPT Image Nov 6, 2025, 11_42_15 PM.png" alt="Business Lunch" class="gallery-image" loading="lazy">
+            <div class="gallery-overlay">
+              <h4>Business Lunch</h4>
+              <p>Professional meetings in private suites</p>
+              <span class="event-capacity">30 Guests</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+
+  <!-- Mobile Navigation -->
+  <nav class="mobile-nav" id="mobileNav">
+    <div class="mobile-nav-content">
+      <a href="index.html" class="nav-item">
+        <i class="fas fa-utensils"></i><span>Menu</span>
+      </a>
+      <a href="specials.html" class="nav-item">
+        <i class="fas fa-star"></i><span>Specials</span>
+      </a>
+      <a href="ambience.html" class="nav-item active">
+        <i class="fas fa-camera"></i><span>Ambience</span>
+      </a>
+      <a href="story.html" class="nav-item">
+        <i class="fas fa-book"></i><span>Our Story</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- Footer -->
+  <footer class="footer v2">
+    <div class="footer-wrapper">
+      <div class="footer-info">
+        <div class="footer-section">
+          <h4>Your Restaurant Name</h4>
+          <p>Premium dining experience with innovative digital menu</p>
+          <div class="social-links">
+            <a href="" target="_blank" aria-label="Instagram">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a href="" target="_blank" aria-label="Facebook">
+              <i class="fab fa-facebook"></i>
+            </a>
+            <a href="" target="_blank" aria-label="Twitter">
+              <i class="fab fa-twitter"></i>
+            </a>
+          </div>
+        </div>
+
+        <div class="footer-section">
+          <h4>Contact</h4>
+          <p>📍 your address</p>
+          <p>📞 your phone number</p>
+          <p>✉️ your email</p>
+        </div>
+
+        <div class="footer-section">
+          <h4>Hours</h4>
+          <p>Mon–Fri: 11:00 – 22:00</p>
+          <p>Weekend: 10:00 – 23:00</p>
+        </div>
+      </div>
+
+      <div class="footer-map">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3672.009429628626!2d72.50858677524187!3d23.021561316213507!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e84f9a5b7ad01%3A0xbddbeee0c35e3b0d!2sThe%20Leela%20Gandhinagar!5e0!3m2!1sen!2sin!4v1731423212292!5m2!1sen!2sin"
+          width="100%" height="260" style="border:0;" allowfullscreen="" loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; Your Restaurant. All rights reserved.</p>
+      <a href="https://wa.me/918377861214?text=Hi%2C%20I'm%20interested%20in%20your%20Digital%20Menu.%20Can%20we%20talk%3F"
+        target="_blank" rel="noopener" class="visuplate">
+        TheVisuplate
+      </a>
+
+    </div>
+  </footer>
+
+  
+
+  <!-- Ambience Page Specific Script -->
+  <script>
+    // Gallery Filter Functionality
+    const galleryFilters = document.querySelectorAll('.gallery-filter');
+    const galleryItems = document.querySelectorAll('.gallery-item');
+
+    galleryFilters.forEach(filter => {
+      filter.addEventListener('click', () => {
+        // Update active filter
+        galleryFilters.forEach(f => f.classList.remove('active'));
+        filter.classList.add('active');
+        
+        const filterValue = filter.getAttribute('data-filter');
+        
+        // Filter items
+        galleryItems.forEach(item => {
+          if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
+            item.style.display = 'block';
+            setTimeout(() => {
+              item.style.opacity = '1';
+              item.style.transform = 'scale(1)';
+            }, 100);
+          } else {
+            item.style.opacity = '0';
+            item.style.transform = 'scale(0.8)';
+            setTimeout(() => {
+              item.style.display = 'none';
+            }, 300);
+          }
+        });
+      });
+    });
+
+    // Scroll to experience function
+    function scrollToExperience() {
+      document.getElementById('experienceZones').scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+
+    
+    // Show gesture hint on mobile
+    if (window.innerWidth <= 768) {
+      setTimeout(() => {
+        document.getElementById('gestureHint').classList.add('show');
+        setTimeout(() => {
+          document.getElementById('gestureHint').classList.remove('show');
+        }, 5000);
+      }, 3000);
+    }
+  </script>
+
+  <!-- Additional CSS for Ambience Page -->
+  <style>
+    .zone-badge {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: var(--primary);
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      z-index: 2;
+    }
+    
+    .btn-sm {
+      padding: 0.4rem 0.8rem;
+      font-size: 0.8rem;
+    }
+    
+    .btn-lg {
+      padding: 1rem 2rem;
+      font-size: 1.1rem;
+    }
+  </style>
+  
+<!-- Scripts -->
+  <script src="ambience.js"></script>
+    <!-- ✅ Mobile Nav Hide/Show on Scroll -->
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    let lastScrollY = window.scrollY;
+    const mobileNav = document.querySelector('.mobile-nav');
+
+    if (mobileNav) {
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > lastScrollY) {
+          // Scrolling down → hide nav
+          mobileNav.classList.add('hide');
+        } else {
+          // Scrolling up → show nav
+          mobileNav.classList.remove('hide');
+        }
+        lastScrollY = window.scrollY;
+      });
+    }
+  });
+</script>
+
+
+</body>
+
+</html>
