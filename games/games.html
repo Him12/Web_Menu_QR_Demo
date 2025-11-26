@@ -45,11 +45,47 @@
             margin: 0 auto;
         }
 
+        /* --- Header Layout (Desktop) --- */
         header {
-            text-align: center;
+            width: 100%;
             padding: 20px 0;
-            margin-bottom: 30px;
         }
+
+        .header-content {
+            max-width: 1300px;
+            margin: auto;
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .brand-link {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+            color: var(--light);
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            background: rgba(255, 255, 255, 0.25);
+            padding: 10px 22px;
+            border-radius: 12px;
+            font-weight: bold;
+        }
+
+        .brand-text h1 {
+            font-size: 2.4rem;
+            margin: 0;
+        }
+
+        .brand-text p {
+            font-size: 1.1rem;
+            opacity: 0.85;
+            margin-top: 3px;
+        }
+
 
         h1 {
             font-size: 3rem;
@@ -846,6 +882,52 @@
             header {
                 padding-top: 10px;
             }
+
+            /* Mobile game screen fix */
+            @media (max-width: 768px) {
+
+                .game-header {
+                    flex-direction: column;
+                    gap: 10px;
+                    text-align: center;
+                }
+
+                .game-header h2 {
+                    font-size: 1.5rem;
+                }
+
+                .stats {
+                    justify-content: center;
+                }
+
+                canvas {
+                    width: 100% !important;
+                    height: auto !important;
+                }
+
+                .back-btn {
+                    width: 100%;
+                    justify-content: center;
+                    font-size: 1rem;
+                }
+
+                .game-controls {
+                    flex-direction: column;
+                    width: 100%;
+                }
+
+                .btn {
+                    width: 100%;
+                    padding: 12px;
+                    font-size: 1.1rem;
+                }
+
+                .instructions {
+                    width: 100%;
+                }
+            }
+
+
         }
     </style>
 
@@ -1988,8 +2070,12 @@
             let gameSpeed = 100;
             let gameLoopId;
 
-            // Initialize snake
-            function initSnake() {
+            // Touch swipe tracking
+            let touchStartX = 0;
+            let touchStartY = 0;
+
+            // Initialize snake body
+            function setupSnake() {
                 snake = [
                     { x: 10, y: 10 },
                     { x: 9, y: 10 },
@@ -1997,14 +2083,14 @@
                 ];
             }
 
-            // Generate food
+            // Create food
             function generateFood() {
                 food = {
                     x: Math.floor(Math.random() * (canvas.width / 20)),
                     y: Math.floor(Math.random() * (canvas.height / 20))
                 };
 
-                // Make sure food doesn't appear on snake
+                // Avoid spawning food on snake
                 for (let segment of snake) {
                     if (segment.x === food.x && segment.y === food.y) {
                         return generateFood();
@@ -2012,25 +2098,23 @@
                 }
             }
 
-            // Draw game elements
+            // Draw everything
             function draw() {
-                // Clear canvas
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-                // Draw snake
+                // Snake
                 ctx.fillStyle = "#4CAF50";
                 for (let segment of snake) {
                     ctx.fillRect(segment.x * 20, segment.y * 20, 18, 18);
                 }
 
-                // Draw food
+                // Food
                 ctx.fillStyle = "#FF5722";
                 ctx.fillRect(food.x * 20, food.y * 20, 18, 18);
             }
 
-            // Update game state
+            // Update snake movement
             function update() {
-                // Move snake
                 const head = { x: snake[0].x, y: snake[0].y };
 
                 switch (direction) {
@@ -2040,13 +2124,14 @@
                     case 'right': head.x++; break;
                 }
 
-                // Check wall collision
-                if (head.x < 0 || head.x >= canvas.width / 20 || head.y < 0 || head.y >= canvas.height / 20) {
+                // Wall hit
+                if (head.x < 0 || head.x >= canvas.width / 20 ||
+                    head.y < 0 || head.y >= canvas.height / 20) {
                     gameOver();
                     return;
                 }
 
-                // Check self collision
+                // Self hit
                 for (let segment of snake) {
                     if (head.x === segment.x && head.y === segment.y) {
                         gameOver();
@@ -2054,27 +2139,23 @@
                     }
                 }
 
-                // Add new head
                 snake.unshift(head);
 
-                // Check food collision
+                // Food eaten
                 if (head.x === food.x && head.y === food.y) {
                     score += 10;
                     updateScore();
                     generateFood();
                 } else {
-                    // Remove tail if no food eaten
                     snake.pop();
                 }
             }
 
-            // Game loop
+            // Main game loop
             function gameLoop() {
                 if (!gameActive) return;
-
                 update();
                 draw();
-
                 gameLoopId = setTimeout(gameLoop, gameSpeed);
             }
 
@@ -2084,16 +2165,17 @@
 
                 gameActive = true;
                 score = 0;
-                initSnake();
+                setupSnake();
                 generateFood();
                 updateScore();
                 gameLoop();
 
-                // Add keyboard controls
                 document.addEventListener('keydown', handleKeyPress);
+                canvas.addEventListener("touchstart", handleTouchStart);
+                canvas.addEventListener("touchend", handleTouchEnd);
             }
 
-            // Handle keyboard input
+            // Keyboard controls
             function handleKeyPress(e) {
                 if (!gameActive) return;
 
@@ -2113,13 +2195,37 @@
                 }
             }
 
-            // Update score display
+            // Touch start — record start point
+            function handleTouchStart(e) {
+                const touch = e.changedTouches[0];
+                touchStartX = touch.clientX;
+                touchStartY = touch.clientY;
+            }
+
+            // Touch end — calculate swipe direction
+            function handleTouchEnd(e) {
+                const touch = e.changedTouches[0];
+                let dx = touch.clientX - touchStartX;
+                let dy = touch.clientY - touchStartY;
+
+                // Horizontal swipe
+                if (Math.abs(dx) > Math.abs(dy)) {
+                    if (dx > 0 && direction !== 'left') direction = 'right';
+                    else if (dx < 0 && direction !== 'right') direction = 'left';
+                } else {
+                    // Vertical swipe
+                    if (dy > 0 && direction !== 'up') direction = 'down';
+                    else if (dy < 0 && direction !== 'down') direction = 'up';
+                }
+            }
+
+            // Score UI update
             function updateScore() {
                 scoreDisplay.textContent = score;
                 lengthDisplay.textContent = snake.length;
             }
 
-            // Game over
+            // Game over screen
             function gameOver() {
                 gameActive = false;
                 clearTimeout(gameLoopId);
@@ -2137,18 +2243,21 @@
                 ctx.fillText(`Snake Length: ${snake.length}`, canvas.width / 2, canvas.height / 2 + 40);
 
                 document.removeEventListener('keydown', handleKeyPress);
+                canvas.removeEventListener("touchstart", handleTouchStart);
+                canvas.removeEventListener("touchend", handleTouchEnd);
             }
 
-            // Event listeners
+            // Buttons
             startBtn.addEventListener('click', startGame);
             restartBtn.addEventListener('click', startGame);
 
-            // Initial setup
-            initSnake();
+            // Initial load
+            setupSnake();
             generateFood();
             draw();
             updateScore();
         }
+
 
         // Tic Tac Toe Game
         function initTicTacToe() {
@@ -2755,7 +2864,31 @@
                 }, 1000);
 
                 // Add keyboard controls
+                // Add keyboard controls
                 document.addEventListener('keydown', handleKeyPress);
+
+                // Add mobile touch controls
+                document.addEventListener("touchstart", function (e) {
+                    if (!gameActive) return;
+
+                    let touchX = e.touches[0].clientX;
+                    let touchY = e.touches[0].clientY;
+
+                    let centerX = window.innerWidth / 2;
+                    let centerY = window.innerHeight / 2;
+
+                    let dx = touchX - centerX;
+                    let dy = touchY - centerY;
+
+                    if (Math.abs(dx) > Math.abs(dy)) {
+                        if (dx > 0 && direction !== 'left') direction = 'right';
+                        else if (dx < 0 && direction !== 'right') direction = 'left';
+                    } else {
+                        if (dy > 0 && direction !== 'up') direction = 'down';
+                        else if (dy < 0 && direction !== 'down') direction = 'up';
+                    }
+                });
+
             }
 
             // End game
@@ -3004,7 +3137,31 @@
                 createMaze();
 
                 // Add keyboard controls
+                // Add keyboard controls
                 document.addEventListener('keydown', handleKeyPress);
+
+                // Add mobile touch controls
+                document.addEventListener("touchstart", function (e) {
+                    if (!gameActive) return;
+
+                    let touchX = e.touches[0].clientX;
+                    let touchY = e.touches[0].clientY;
+
+                    let centerX = window.innerWidth / 2;
+                    let centerY = window.innerHeight / 2;
+
+                    let dx = touchX - centerX;
+                    let dy = touchY - centerY;
+
+                    if (Math.abs(dx) > Math.abs(dy)) {
+                        if (dx > 0 && direction !== 'left') direction = 'right';
+                        else if (dx < 0 && direction !== 'right') direction = 'left';
+                    } else {
+                        if (dy > 0 && direction !== 'up') direction = 'down';
+                        else if (dy < 0 && direction !== 'down') direction = 'up';
+                    }
+                });
+
             }
 
             // End game
@@ -3593,6 +3750,28 @@
 
                 // Add keyboard controls
                 document.addEventListener('keydown', handleKeyPress);
+
+                // Add mobile touch controls
+                document.addEventListener("touchstart", function (e) {
+                    if (!gameActive) return;
+
+                    let touchX = e.touches[0].clientX;
+                    let touchY = e.touches[0].clientY;
+
+                    let centerX = window.innerWidth / 2;
+                    let centerY = window.innerHeight / 2;
+
+                    let dx = touchX - centerX;
+                    let dy = touchY - centerY;
+
+                    if (Math.abs(dx) > Math.abs(dy)) {
+                        if (dx > 0 && direction !== 'left') direction = 'right';
+                        else if (dx < 0 && direction !== 'right') direction = 'left';
+                    } else {
+                        if (dy > 0 && direction !== 'up') direction = 'down';
+                        else if (dy < 0 && direction !== 'down') direction = 'up';
+                    }
+                });
             }
 
             // Game loop
