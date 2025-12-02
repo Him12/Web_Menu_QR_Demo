@@ -1,6 +1,6 @@
 // main.js - Premium Restaurant Menu (Favorites Removed Version, Universal Enhanced)
 // 👉 CHANGE THIS TO YOUR GOOGLE SCRIPT DEPLOYMENT URL
-const GOOGLE_SHEET_WEBHOOK = "https://script.google.com/macros/s/AKfycbyB4SqfUzLzK3NN8uS-ogVxHpkJvXN2yGQ4q3OvScxozDVkxa2N--nf6L9I6O01RvaJ_w/exec";
+const GOOGLE_SHEET_WEBHOOK = "https://web-menu-qr-demo.vercel.app/api/send";
 
 async function sendLeadToGoogle(name, email, mobile) {
     try {
