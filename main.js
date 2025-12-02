@@ -842,6 +842,21 @@ document.addEventListener("DOMContentLoaded", () => {
             alert("Please enter a valid 10-digit mobile number.");
             return;
         }
+        // Check if returning customer
+        let customer = { found: false };
+
+        try {
+            customer = await checkReturningCustomer(email, mobile);
+        } catch (err) {
+            console.warn("Returning customer check failed", err);
+        }
+
+        if (customer.found) {
+            alert(`Hi ${customer.name}, welcome back! 💛 You have visited us ${customer.visits} times.`);
+        } else {
+            alert(`Hi ${name}, welcome! Enjoy your first visit 💫`);
+        }
+
 
         // Save to Google Sheets
         await sendLeadToGoogle(name, email, mobile);
@@ -854,3 +869,13 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 });
+
+async function checkReturningCustomer(email, mobile) {
+    const res = await fetch("https://web-menu-qr-demo.vercel.app/api/check-customer", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, mobile })
+    });
+
+    return await res.json();
+}
