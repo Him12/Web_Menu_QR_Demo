@@ -823,8 +823,23 @@ document.addEventListener("DOMContentLoaded", () => {
         const email = document.getElementById("qrEmail").value.trim();
         const mobile = document.getElementById("qrMobile").value.trim();
 
-        if (!name || !email || !mobile) {
-            alert("Please fill all details.");
+        // 🔥 NAME VALIDATION
+        if (!name || name.length < 2) {
+            alert("Please enter a valid name.");
+            return;
+        }
+
+        // 🔥 EMAIL VALIDATION (strong regex)
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailPattern.test(email)) {
+            alert("Please enter a valid email address.");
+            return;
+        }
+
+        // 🔥 MOBILE VALIDATION (must be exactly 10 digits)
+        const mobilePattern = /^[0-9]{10}$/;
+        if (!mobilePattern.test(mobile)) {
+            alert("Please enter a valid 10-digit mobile number.");
             return;
         }
 
