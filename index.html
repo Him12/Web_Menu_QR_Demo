@@ -328,6 +328,66 @@
     </div>
   </footer>
 
+<!-- QR Lead Popup -->
+<div id="qrPopup" class="qr-popup hidden">
+  <div class="qr-popup-content">
+    <h2>Welcome!</h2>
+    <p>Thanks for scanning the QR. Please enter your details.</p>
+
+    <input type="text" id="qrName" placeholder="Your Name" required>
+    <input type="email" id="qrEmail" placeholder="Email" required>
+    <input type="tel" id="qrMobile" placeholder="Mobile Number" required>
+
+    <button id="qrSubmit">Continue</button>
+  </div>
+</div>
+
+<style>
+.qr-popup.hidden { display: none; }
+
+.qr-popup {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.55);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999;
+  backdrop-filter: blur(5px);
+}
+
+.qr-popup-content {
+  background: rgba(255,255,255,0.2);
+  padding: 25px;
+  width: 90%;
+  max-width: 360px;
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  text-align: center;
+  color: white;
+  backdrop-filter: blur(10px);
+}
+
+.qr-popup-content input {
+  width: 100%;
+  padding: 10px;
+  margin: 7px 0;
+  border: none;
+  border-radius: 8px;
+}
+
+.qr-popup-content button {
+  width: 100%;
+  padding: 12px;
+  background: #b76e79;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+}
+</style>
 
 
   <script src="main.js"></script>

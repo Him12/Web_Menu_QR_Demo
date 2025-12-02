@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Table Tennis - TheVisuplate Game Arcade</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #6a11cb;
+            --secondary: #2575fc;
+            --accent: #ff5722;
+            --light: #ffffff;
+            --dark: #212529;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --info: #17a2b8;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: var(--light);
+            min-height: 100vh;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            width: 100%;
+            padding: 20px 0;
+        }
+
+        .header-content {
+            max-width: 1300px;
+            margin: auto;
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .brand-link {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+            color: var(--light);
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            background: rgba(255, 255, 255, 0.25);
+            padding: 10px 22px;
+            border-radius: 12px;
+            font-weight: bold;
+        }
+
+        .brand-text h1 {
+            font-size: 2.4rem;
+            margin: 0;
+        }
+
+        .brand-text p {
+            font-size: 1.1rem;
+            opacity: 0.85;
+            margin-top: 3px;
+        }
+
+        .game-screen {
+            position: relative;
+            width: 100%;
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .back-btn {
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .game-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .table-tennis-container {
+            position: relative;
+            width: 600px;
+            height: 400px;
+            background: #000;
+            margin: 20px 0;
+        }
+
+        .paddle {
+            position: absolute;
+            width: 15px;
+            height: 80px;
+            background: #fff;
+        }
+
+        .paddle-left {
+            left: 20px;
+        }
+
+        .paddle-right {
+            right: 20px;
+        }
+
+        .ball {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background: #fff;
+            border-radius: 50%;
+        }
+
+        .game-controls {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-warning {
+            background: var(--warning);
+            color: var(--dark);
+        }
+
+        .stats {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .stat-box {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            min-width: 120px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        .instructions {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            max-width: 600px;
+        }
+
+        .instructions h3 {
+            margin-bottom: 10px;
+            color: var(--warning);
+        }
+
+        .instructions ul {
+            text-align: left;
+            padding-left: 20px;
+        }
+
+        .instructions li {
+            margin-bottom: 8px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .game-header {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+
+            .game-header h2 {
+                font-size: 1.5rem;
+            }
+
+            .stats {
+                justify-content: center;
+            }
+
+            .table-tennis-container {
+                width: 100%;
+                max-width: 500px;
+                height: 300px;
+            }
+
+            .back-btn {
+                width: 100%;
+                justify-content: center;
+                font-size: 1rem;
+            }
+
+            .game-controls {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .btn {
+                width: 100%;
+                padding: 12px;
+                font-size: 1.1rem;
+            }
+
+            .instructions {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-content">
+                <div class="brand">
+                    <a href="../index.html" class="brand-link">
+                        <div class="logo">Home</div>
+                        <div class="brand-text">
+                            <h1>TheVisuplate Game Arcade</h1>
+                            <p>Exciting Games - All in One Place!</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <div class="game-screen">
+            <div class="game-header">
+                <a href="games.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Menu</a>
+                <h2>Table Tennis</h2>
+                <div class="stats">
+                    <div class="stat-box">
+                        <div class="stat-label">Player</div>
+                        <div class="stat-value" id="tennis-player">0</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">Computer</div>
+                        <div class="stat-value" id="tennis-computer">0</div>
+                    </div>
+                </div>
+            </div>
+            <div class="game-content">
+                <div class="table-tennis-container" id="table-tennis-container">
+                    <div class="paddle paddle-left" id="paddle-left"></div>
+                    <div class="paddle paddle-right" id="paddle-right"></div>
+                    <div class="ball" id="tennis-ball"></div>
+                </div>
+                <div class="game-controls">
+                    <button class="btn btn-primary" id="tennis-start">Start Game</button>
+                    <button class="btn btn-warning" id="tennis-restart">Restart</button>
+                </div>
+                <div class="instructions">
+                    <h3>How to Play</h3>
+                    <ul>
+                        <li>Use W and S keys to move your paddle up and down</li>
+                        <li>Hit the ball with your paddle</li>
+                        <li>Score when the ball passes the computer's paddle</li>
+                        <li>First to 10 points wins!</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>TheVisuplate Game Arcade &copy;</p>
+        </footer>
+    </div>
+
+    <script>
+        const container = document.getElementById('table-tennis-container');
+        const leftPaddle = document.getElementById('paddle-left');
+        const rightPaddle = document.getElementById('paddle-right');
+        const ball = document.getElementById('tennis-ball');
+        const startBtn = document.getElementById('tennis-start');
+        const restartBtn = document.getElementById('tennis-restart');
+        const playerScoreDisplay = document.getElementById('tennis-player');
+        const computerScoreDisplay = document.getElementById('tennis-computer');
+
+        let playerScore = 0;
+        let computerScore = 0;
+        let gameActive = false;
+        let gameInterval;
+
+        let ballX = container.offsetWidth / 2;
+        let ballY = container.offsetHeight / 2;
+        let ballSpeedX = 3;
+        let ballSpeedY = 3;
+
+        let leftPaddleY = container.offsetHeight / 2 - 40;
+        let rightPaddleY = container.offsetHeight / 2 - 40;
+        const paddleSpeed = 5;
+
+        function startGame() {
+            if (gameActive) return;
+
+            gameActive = true;
+            playerScore = 0;
+            computerScore = 0;
+            playerScoreDisplay.textContent = playerScore;
+            computerScoreDisplay.textContent = computerScore;
+
+            resetBall();
+            gameLoop();
+
+            document.addEventListener('keydown', handleKeyPress);
+        }
+
+        function gameLoop() {
+            if (!gameActive) return;
+
+            ballX += ballSpeedX;
+            ballY += ballSpeedY;
+
+            if (ballY <= 0 || ballY >= container.offsetHeight - 15) {
+                ballSpeedY = -ballSpeedY;
+            }
+
+            if (
+                ballX <= 35 &&
+                ballY >= leftPaddleY &&
+                ballY <= leftPaddleY + 80
+            ) {
+                ballSpeedX = -ballSpeedX;
+                ballSpeedY = (Math.random() - 0.5) * 6;
+            }
+
+            if (
+                ballX >= container.offsetWidth - 50 &&
+                ballY >= rightPaddleY &&
+                ballY <= rightPaddleY + 80
+            ) {
+                ballSpeedX = -ballSpeedX;
+                ballSpeedY = (Math.random() - 0.5) * 6;
+            }
+
+            if (ballX < 0) {
+                computerScore++;
+                computerScoreDisplay.textContent = computerScore;
+                resetBall();
+            }
+
+            if (ballX > container.offsetWidth) {
+                playerScore++;
+                playerScoreDisplay.textContent = playerScore;
+                resetBall();
+            }
+
+            if (ballY > rightPaddleY + 40) {
+                rightPaddleY += paddleSpeed;
+            } else if (ballY < rightPaddleY + 40) {
+                rightPaddleY -= paddleSpeed;
+            }
+
+            leftPaddleY = Math.max(0, Math.min(container.offsetHeight - 80, leftPaddleY));
+            rightPaddleY = Math.max(0, Math.min(container.offsetHeight - 80, rightPaddleY));
+
+            ball.style.left = `${ballX}px`;
+            ball.style.top = `${ballY}px`;
+            leftPaddle.style.top = `${leftPaddleY}px`;
+            rightPaddle.style.top = `${rightPaddleY}px`;
+
+            if (playerScore >= 10 || computerScore >= 10) {
+                endGame();
+                return;
+            }
+
+            gameInterval = setTimeout(gameLoop, 16);
+        }
+
+        function resetBall() {
+            ballX = container.offsetWidth / 2;
+            ballY = container.offsetHeight / 2;
+            ballSpeedX = (Math.random() > 0.5 ? 1 : -1) * 3;
+            ballSpeedY = (Math.random() - 0.5) * 3;
+        }
+
+        function handleKeyPress(e) {
+            if (!gameActive) return;
+
+            switch (e.key) {
+                case 'w':
+                case 'W':
+                    leftPaddleY -= paddleSpeed;
+                    break;
+                case 's':
+                case 'S':
+                    leftPaddleY += paddleSpeed;
+                    break;
+            }
+        }
+
+        function endGame() {
+            gameActive = false;
+            clearTimeout(gameInterval);
+
+            document.removeEventListener('keydown', handleKeyPress);
+
+            const winner = playerScore > computerScore ? 'Player' : 'Computer';
+            alert(`Game Over! ${winner} wins!`);
+        }
+
+        startBtn.addEventListener('click', startGame);
+        restartBtn.addEventListener('click', startGame);
+
+        leftPaddle.style.top = `${leftPaddleY}px`;
+        rightPaddle.style.top = `${rightPaddleY}px`;
+        ball.style.left = `${ballX}px`;
+        ball.style.top = `${ballY}px`;
+    </script>
+</body>
+</html>

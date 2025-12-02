@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tower Defense - TheVisuplate Game Arcade</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #6a11cb;
+            --secondary: #2575fc;
+            --accent: #ff5722;
+            --light: #ffffff;
+            --dark: #212529;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --info: #17a2b8;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: var(--light);
+            min-height: 100vh;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            width: 100%;
+            padding: 20px 0;
+        }
+
+        .header-content {
+            max-width: 1300px;
+            margin: auto;
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .brand-link {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+            color: var(--light);
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            background: rgba(255, 255, 255, 0.25);
+            padding: 10px 22px;
+            border-radius: 12px;
+            font-weight: bold;
+        }
+
+        .brand-text h1 {
+            font-size: 2.4rem;
+            margin: 0;
+        }
+
+        .brand-text p {
+            font-size: 1.1rem;
+            opacity: 0.85;
+            margin-top: 3px;
+        }
+
+        .game-screen {
+            position: relative;
+            width: 100%;
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .back-btn {
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .game-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .td-board {
+            position: relative;
+            width: 600px;
+            height: 400px;
+            background: #8BC34A;
+            margin: 20px 0;
+        }
+
+        .td-path {
+            position: absolute;
+            background: #795548;
+        }
+
+        .td-tower {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background: #2196F3;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .td-enemy {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #F44336;
+            border-radius: 50%;
+            z-index: 5;
+        }
+
+        .game-controls {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-warning {
+            background: var(--warning);
+            color: var(--dark);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .stats {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .stat-box {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            min-width: 120px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        .instructions {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            max-width: 600px;
+        }
+
+        .instructions h3 {
+            margin-bottom: 10px;
+            color: var(--warning);
+        }
+
+        .instructions ul {
+            text-align: left;
+            padding-left: 20px;
+        }
+
+        .instructions li {
+            margin-bottom: 8px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .game-header {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+
+            .game-header h2 {
+                font-size: 1.5rem;
+            }
+
+            .stats {
+                justify-content: center;
+            }
+
+            .td-board {
+                width: 100%;
+                max-width: 500px;
+                height: 300px;
+            }
+
+            .back-btn {
+                width: 100%;
+                justify-content: center;
+                font-size: 1rem;
+            }
+
+            .game-controls {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .btn {
+                width: 100%;
+                padding: 12px;
+                font-size: 1.1rem;
+            }
+
+            .instructions {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-content">
+                <div class="brand">
+                    <a href="../index.html" class="brand-link">
+                        <div class="logo">Home</div>
+                        <div class="brand-text">
+                            <h1>TheVisuplate Game Arcade</h1>
+                            <p>Exciting Games - All in One Place!</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <div class="game-screen">
+            <div class="game-header">
+                <a href="games.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Menu</a>
+                <h2>Tower Defense</h2>
+                <div class="stats">
+                    <div class="stat-box">
+                        <div class="stat-label">Lives</div>
+                        <div class="stat-value" id="td-lives">10</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">Gold</div>
+                        <div class="stat-value" id="td-gold">100</div>
+                    </div>
+                </div>
+            </div>
+            <div class="game-content">
+                <div class="td-board" id="td-board"></div>
+                <div class="game-controls">
+                    <button class="btn btn-primary" id="td-start">Start Wave</button>
+                    <button class="btn btn-warning" id="td-restart">Restart</button>
+                    <button class="btn btn-success" id="td-build">Build Tower (50g)</button>
+                </div>
+                <div class="instructions">
+                    <h3>How to Play</h3>
+                    <ul>
+                        <li>Build towers along the path to stop enemies</li>
+                        <li>Each enemy that reaches the end costs 1 life</li>
+                        <li>Earn gold by defeating enemies</li>
+                        <li>Survive as many waves as possible!</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>TheVisuplate Game Arcade &copy;</p>
+        </footer>
+    </div>
+
+    <script>
+        const board = document.getElementById('td-board');
+        const startBtn = document.getElementById('td-start');
+        const restartBtn = document.getElementById('td-restart');
+        const buildBtn = document.getElementById('td-build');
+        const livesDisplay = document.getElementById('td-lives');
+        const goldDisplay = document.getElementById('td-gold');
+
+        let lives = 10;
+        let gold = 100;
+        let gameActive = false;
+        let wave = 1;
+        let enemies = [];
+        let towers = [];
+        let path = [];
+
+        function createBoard() {
+            board.innerHTML = '';
+
+            path = [
+                { x: 0, y: 200 },
+                { x: 150, y: 200 },
+                { x: 150, y: 100 },
+                { x: 300, y: 100 },
+                { x: 300, y: 300 },
+                { x: 450, y: 300 },
+                { x: 450, y: 150 },
+                { x: 600, y: 150 }
+            ];
+
+            for (let i = 0; i < path.length - 1; i++) {
+                const segment = document.createElement('div');
+                segment.className = 'td-path';
+
+                const start = path[i];
+                const end = path[i + 1];
+
+                if (start.x === end.x) {
+                    segment.style.left = `${start.x}px`;
+                    segment.style.top = `${Math.min(start.y, end.y)}px`;
+                    segment.style.width = '20px';
+                    segment.style.height = `${Math.abs(end.y - start.y)}px`;
+                } else {
+                    segment.style.left = `${Math.min(start.x, end.x)}px`;
+                    segment.style.top = `${start.y}px`;
+                    segment.style.width = `${Math.abs(end.x - start.x)}px`;
+                    segment.style.height = '20px';
+                }
+
+                board.appendChild(segment);
+            }
+
+            const buildAreas = [
+                { x: 50, y: 50 }, { x: 50, y: 250 }, { x: 200, y: 200 },
+                { x: 350, y: 50 }, { x: 350, y: 200 }, { x: 500, y: 250 }
+            ];
+
+            buildAreas.forEach(area => {
+                const buildArea = document.createElement('div');
+                buildArea.className = 'td-tower';
+                buildArea.style.left = `${area.x}px`;
+                buildArea.style.top = `${area.y}px`;
+                buildArea.addEventListener('click', () => buildTower(area.x, area.y));
+                board.appendChild(buildArea);
+            });
+        }
+
+        function buildTower(x, y) {
+            if (!gameActive || gold < 50) return;
+
+            for (const tower of towers) {
+                if (tower.x === x && tower.y === y) return;
+            }
+
+            gold -= 50;
+            goldDisplay.textContent = gold;
+
+            const tower = document.createElement('div');
+            tower.className = 'td-tower';
+            tower.style.left = `${x}px`;
+            tower.style.top = `${y}px`;
+            board.appendChild(tower);
+
+            towers.push({
+                x: x,
+                y: y,
+                element: tower,
+                range: 100,
+                damage: 10,
+                cooldown: 0
+            });
+        }
+
+        function startWave() {
+            if (!gameActive) return;
+
+            for (let i = 0; i < wave * 3; i++) {
+                setTimeout(() => {
+                    createEnemy();
+                }, i * 1000);
+            }
+
+            wave++;
+        }
+
+        function createEnemy() {
+            if (!gameActive) return;
+
+            const enemy = document.createElement('div');
+            enemy.className = 'td-enemy';
+            enemy.style.left = '0px';
+            enemy.style.top = '190px';
+            board.appendChild(enemy);
+
+            enemies.push({
+                x: 0,
+                y: 200,
+                element: enemy,
+                health: 20 + wave * 5,
+                speed: 1,
+                pathIndex: 0
+            });
+        }
+
+        function gameLoop() {
+            if (!gameActive) return;
+
+            for (let i = 0; i < enemies.length; i++) {
+                const enemy = enemies[i];
+
+                if (enemy.pathIndex < path.length - 1) {
+                    const target = path[enemy.pathIndex + 1];
+                    const dx = target.x - enemy.x;
+                    const dy = target.y - enemy.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < enemy.speed) {
+                        enemy.pathIndex++;
+                    } else {
+                        enemy.x += (dx / distance) * enemy.speed;
+                        enemy.y += (dy / distance) * enemy.speed;
+                    }
+
+                    enemy.element.style.left = `${enemy.x - 10}px`;
+                    enemy.element.style.top = `${enemy.y - 10}px`;
+                } else {
+                    board.removeChild(enemy.element);
+                    enemies.splice(i, 1);
+                    i--;
+                    lives--;
+                    livesDisplay.textContent = lives;
+
+                    if (lives <= 0) {
+                        endGame();
+                        return;
+                    }
+                }
+            }
+
+            for (const tower of towers) {
+                if (tower.cooldown > 0) {
+                    tower.cooldown--;
+                } else {
+                    for (const enemy of enemies) {
+                        const dx = enemy.x - (tower.x + 15);
+                        const dy = enemy.y - (tower.y + 15);
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+
+                        if (distance < tower.range) {
+                            enemy.health -= tower.damage;
+                            tower.cooldown = 30;
+
+                            if (enemy.health <= 0) {
+                                board.removeChild(enemy.element);
+                                const index = enemies.indexOf(enemy);
+                                if (index > -1) {
+                                    enemies.splice(index, 1);
+                                }
+                                gold += 10;
+                                goldDisplay.textContent = gold;
+                            }
+
+                            break;
+                        }
+                    }
+                }
+            }
+
+            setTimeout(gameLoop, 16);
+        }
+
+        function startGame() {
+            if (gameActive) return;
+
+            gameActive = true;
+            lives = 10;
+            gold = 100;
+            wave = 1;
+            enemies = [];
+            towers = [];
+
+            livesDisplay.textContent = lives;
+            goldDisplay.textContent = gold;
+
+            createBoard();
+            gameLoop();
+        }
+
+        function endGame() {
+            gameActive = false;
+            alert(`Game Over! You survived ${wave - 1} waves!`);
+        }
+
+        startBtn.addEventListener('click', startWave);
+        restartBtn.addEventListener('click', startGame);
+        buildBtn.addEventListener('click', () => {
+            const buildAreas = board.querySelectorAll('.td-tower');
+            for (const area of buildAreas) {
+                const x = parseInt(area.style.left);
+                const y = parseInt(area.style.top);
+                let occupied = false;
+
+                for (const tower of towers) {
+                    if (tower.x === x && tower.y === y) {
+                        occupied = true;
+                        break;
+                    }
+                }
+
+                if (!occupied) {
+                    buildTower(x, y);
+                    break;
+                }
+            }
+        });
+
+        createBoard();
+    </script>
+</body>
+</html>

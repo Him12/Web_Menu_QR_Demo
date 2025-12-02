@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flappy Word - TheVisuplate Game Arcade</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* All CSS styles from the original file will go here */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #6a11cb;
+            --secondary: #2575fc;
+            --accent: #ff5722;
+            --light: #ffffff;
+            --dark: #212529;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --info: #17a2b8;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: var(--light);
+            min-height: 100vh;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Header Layout */
+        header {
+            width: 100%;
+            padding: 20px 0;
+        }
+
+        .header-content {
+            max-width: 1300px;
+            margin: auto;
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .brand-link {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+            color: var(--light);
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            background: rgba(255, 255, 255, 0.25);
+            padding: 10px 22px;
+            border-radius: 12px;
+            font-weight: bold;
+        }
+
+        .brand-text h1 {
+            font-size: 2.4rem;
+            margin: 0;
+        }
+
+        .brand-text p {
+            font-size: 1.1rem;
+            opacity: 0.85;
+            margin-top: 3px;
+        }
+
+        .game-screen {
+            position: relative;
+            width: 100%;
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .back-btn {
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .game-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        canvas {
+            background: #000;
+            border-radius: 10px;
+            max-width: 100%;
+        }
+
+        .game-controls {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-warning {
+            background: var(--warning);
+            color: var(--dark);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+        }
+
+        .stats {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .stat-box {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            min-width: 120px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        .instructions {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            max-width: 600px;
+        }
+
+        .instructions h3 {
+            margin-bottom: 10px;
+            color: var(--warning);
+        }
+
+        .instructions ul {
+            text-align: left;
+            padding-left: 20px;
+        }
+
+        .instructions li {
+            margin-bottom: 8px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .game-header {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+
+            .game-header h2 {
+                font-size: 1.5rem;
+            }
+
+            .stats {
+                justify-content: center;
+            }
+
+            canvas {
+                width: 100% !important;
+                height: auto !important;
+            }
+
+            .back-btn {
+                width: 100%;
+                justify-content: center;
+                font-size: 1rem;
+            }
+
+            .game-controls {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .btn {
+                width: 100%;
+                padding: 12px;
+                font-size: 1.1rem;
+            }
+
+            .instructions {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header with Logo -->
+        <header class="header">
+            <div class="header-content">
+                <!-- Brand (Clickable Logo + Text) -->
+                <div class="brand">
+                    <a href="../index.html" class="brand-link">
+                        <div class="logo">Home</div>
+                        <div class="brand-text">
+                            <h1>TheVisuplate Game Arcade</h1>
+                            <p>Exciting Games - All in One Place!</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <!-- Flappy Word Screen -->
+        <div class="game-screen">
+            <div class="game-header">
+                <a href="games.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Menu</a>
+                <h2>Flappy Word</h2>
+                <div class="stats">
+                    <div class="stat-box">
+                        <div class="stat-label">Score</div>
+                        <div class="stat-value" id="fw-score">0</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">Words</div>
+                        <div class="stat-value" id="fw-words">0</div>
+                    </div>
+                </div>
+            </div>
+            <div class="game-content">
+                <canvas id="flappy-word-canvas" width="800" height="500"></canvas>
+                <div class="game-controls">
+                    <button class="btn btn-primary" id="fw-start">Start Game</button>
+                    <button class="btn btn-warning" id="fw-restart">Restart</button>
+                </div>
+                <div class="instructions">
+                    <h3>How to Play</h3>
+                    <ul>
+                        <li>Click or tap to make the bird flap</li>
+                        <li>Collect letters to form words</li>
+                        <li>Avoid obstacles and pipes</li>
+                        <li>Complete words to earn points</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>TheVisuplate Game Arcade &copy;</p>
+        </footer>
+    </div>
+
+    <script>
+        // Flappy Word Game JavaScript from the original file
+        const canvas = document.getElementById('flappy-word-canvas');
+        const ctx = canvas.getContext('2d');
+        const startBtn = document.getElementById('fw-start');
+        const restartBtn = document.getElementById('fw-restart');
+        const scoreDisplay = document.getElementById('fw-score');
+        const wordsDisplay = document.getElementById('fw-words');
+
+        // Game variables
+        let gameActive = false;
+        let score = 0;
+        let wordsCompleted = 0;
+        let currentWord = "";
+        let collectedLetters = [];
+
+        // Bird properties
+        let bird = {
+            x: 100,
+            y: canvas.height / 2,
+            width: 40,
+            height: 30,
+            velocity: 0,
+            gravity: 0.5,
+            jump: -10
+        };
+
+        // Pipes and letters
+        let pipes = [];
+        let letters = [];
+
+        // Word lists
+        const easyWords = ["CAT", "DOG", "SUN", "RUN", "FUN"];
+        const mediumWords = ["BIRD", "GAME", "WORD", "FLY", "BLUE"];
+        const hardWords = ["FLAPPY", "LETTER", "SCORE", "PIPE"];
+
+        // Event listeners
+        startBtn.addEventListener('click', startGame);
+        restartBtn.addEventListener('click', startGame);
+        canvas.addEventListener('click', flap);
+
+        function startGame() {
+            gameActive = true;
+            score = 0;
+            wordsCompleted = 0;
+            collectedLetters = [];
+            pipes = [];
+            letters = [];
+            bird.y = canvas.height / 2;
+            bird.velocity = 0;
+            generateNewWord();
+            updateScore();
+            gameLoop();
+        }
+
+        function gameLoop() {
+            if (!gameActive) return;
+
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw background
+            drawBackground();
+
+            // Update bird
+            updateBird();
+
+            // Update pipes and letters
+            updatePipes();
+            updateLetters();
+
+            // Check collisions
+            checkCollisions();
+
+            // Generate new elements
+            if (Math.random() < 0.02) generatePipe();
+            if (Math.random() < 0.03) generateLetter();
+
+            // Draw bird
+            drawBird();
+
+            requestAnimationFrame(gameLoop);
+        }
+
+        function drawBackground() {
+            // Sky
+            const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            gradient.addColorStop(0, "#87CEEB");
+            gradient.addColorStop(1, "#E0F7FF");
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Ground
+            ctx.fillStyle = "#8BC34A";
+            ctx.fillRect(0, canvas.height - 50, canvas.width, 50);
+        }
+
+        function updateBird() {
+            bird.velocity += bird.gravity;
+            bird.y += bird.velocity;
+
+            if (bird.y < 0) {
+                bird.y = 0;
+                bird.velocity = 0;
+            }
+
+            if (bird.y + bird.height > canvas.height - 50) {
+                gameOver();
+            }
+        }
+
+        function drawBird() {
+            // Bird body
+            ctx.fillStyle = "#FF5722";
+            ctx.beginPath();
+            ctx.arc(bird.x + bird.width / 2, bird.y + bird.height / 2, bird.width / 2, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Eye
+            ctx.fillStyle = "white";
+            ctx.beginPath();
+            ctx.arc(bird.x + bird.width / 2 - 8, bird.y + bird.height / 2 - 5, 6, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.fillStyle = "black";
+            ctx.beginPath();
+            ctx.arc(bird.x + bird.width / 2 - 8, bird.y + bird.height / 2 - 5, 3, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Beak
+            ctx.fillStyle = "#FFC107";
+            ctx.beginPath();
+            ctx.moveTo(bird.x + bird.width / 2 + 10, bird.y + bird.height / 2);
+            ctx.lineTo(bird.x + bird.width / 2 + 25, bird.y + bird.height / 2 - 5);
+            ctx.lineTo(bird.x + bird.width / 2 + 25, bird.y + bird.height / 2 + 5);
+            ctx.closePath();
+            ctx.fill();
+        }
+
+        function flap() {
+            if (gameActive) {
+                bird.velocity = bird.jump;
+            }
+        }
+
+        function generatePipe() {
+            const gap = 150;
+            const pipeWidth = 80;
+            const minHeight = 50;
+            const maxHeight = canvas.height - gap - minHeight - 50;
+
+            const topHeight = minHeight + Math.random() * maxHeight;
+            const bottomHeight = canvas.height - topHeight - gap - 50;
+
+            pipes.push({
+                x: canvas.width,
+                y: 0,
+                width: pipeWidth,
+                height: topHeight,
+                passed: false
+            });
+
+            pipes.push({
+                x: canvas.width,
+                y: canvas.height - bottomHeight - 50,
+                width: pipeWidth,
+                height: bottomHeight,
+                passed: false
+            });
+        }
+
+        function updatePipes() {
+            for (let i = 0; i < pipes.length; i++) {
+                const pipe = pipes[i];
+                pipe.x -= 3;
+
+                // Draw pipe
+                ctx.fillStyle = "#4CAF50";
+                ctx.fillRect(pipe.x, pipe.y, pipe.width, pipe.height);
+
+                // Remove off-screen pipes
+                if (pipe.x + pipe.width < 0) {
+                    pipes.splice(i, 1);
+                    i--;
+                }
+            }
+        }
+
+        function generateLetter() {
+            if (!currentWord) return;
+
+            const missingLetters = [];
+            for (let i = 0; i < currentWord.length; i++) {
+                const letter = currentWord[i];
+                if (!collectedLetters.includes(letter)) {
+                    missingLetters.push(letter);
+                }
+            }
+
+            if (missingLetters.length === 0) return;
+
+            const randomLetter = missingLetters[Math.floor(Math.random() * missingLetters.length)];
+
+            letters.push({
+                x: canvas.width,
+                y: 100 + Math.random() * (canvas.height - 200),
+                letter: randomLetter,
+                width: 30,
+                height: 30
+            });
+        }
+
+        function updateLetters() {
+            for (let i = 0; i < letters.length; i++) {
+                const letterObj = letters[i];
+                letterObj.x -= 2;
+
+                // Draw letter
+                ctx.fillStyle = "#FF9800";
+                ctx.beginPath();
+                ctx.arc(letterObj.x + letterObj.width / 2, letterObj.y + letterObj.height / 2, letterObj.width / 2, 0, Math.PI * 2);
+                ctx.fill();
+
+                ctx.fillStyle = "white";
+                ctx.font = "bold 16px Arial";
+                ctx.textAlign = "center";
+                ctx.textBaseline = "middle";
+                ctx.fillText(letterObj.letter, letterObj.x + letterObj.width / 2, letterObj.y + letterObj.height / 2);
+
+                // Remove off-screen letters
+                if (letterObj.x + letterObj.width < 0) {
+                    letters.splice(i, 1);
+                    i--;
+                }
+            }
+        }
+
+        function checkCollisions() {
+            // Check pipe collisions
+            for (let pipe of pipes) {
+                if (
+                    bird.x < pipe.x + pipe.width &&
+                    bird.x + bird.width > pipe.x &&
+                    bird.y < pipe.y + pipe.height &&
+                    bird.y + bird.height > pipe.y
+                ) {
+                    gameOver();
+                    return;
+                }
+            }
+
+            // Check letter collisions
+            for (let i = 0; i < letters.length; i++) {
+                const letterObj = letters[i];
+
+                if (
+                    bird.x < letterObj.x + letterObj.width &&
+                    bird.x + bird.width > letterObj.x &&
+                    bird.y < letterObj.y + letterObj.height &&
+                    bird.y + bird.height > letterObj.y
+                ) {
+                    collectedLetters.push(letterObj.letter);
+                    letters.splice(i, 1);
+                    i--;
+
+                    updateCurrentWordDisplay();
+
+                    if (collectedLetters.length === currentWord.length) {
+                        score += currentWord.length * 10;
+                        wordsCompleted++;
+                        updateScore();
+                        generateNewWord();
+                    }
+                }
+            }
+        }
+
+        function generateNewWord() {
+            collectedLetters = [];
+
+            let wordList;
+            if (wordsCompleted < 3) {
+                wordList = easyWords;
+            } else if (wordsCompleted < 7) {
+                wordList = mediumWords;
+            } else {
+                wordList = hardWords;
+            }
+
+            currentWord = wordList[Math.floor(Math.random() * wordList.length)];
+            updateCurrentWordDisplay();
+        }
+
+        function updateCurrentWordDisplay() {
+            let displayText = "";
+            for (let i = 0; i < currentWord.length; i++) {
+                const letter = currentWord[i];
+                if (collectedLetters.includes(letter)) {
+                    displayText += letter + " ";
+                } else {
+                    displayText += "_ ";
+                }
+            }
+
+            // Display the current word on the canvas
+            ctx.fillStyle = "#333";
+            ctx.font = "bold 24px Arial";
+            ctx.textAlign = "center";
+            ctx.fillText(displayText.trim(), canvas.width / 2, 30);
+        }
+
+        function updateScore() {
+            scoreDisplay.textContent = score;
+            wordsDisplay.textContent = wordsCompleted;
+        }
+
+        function gameOver() {
+            gameActive = false;
+            ctx.fillStyle = "rgba(0, 0, 0, 0.7)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = "white";
+            ctx.font = "bold 36px Arial";
+            ctx.textAlign = "center";
+            ctx.fillText("Game Over!", canvas.width / 2, canvas.height / 2 - 50);
+
+            ctx.font = "24px Arial";
+            ctx.fillText(`Final Score: ${score}`, canvas.width / 2, canvas.height / 2);
+            ctx.fillText(`Words Completed: ${wordsCompleted}`, canvas.width / 2, canvas.height / 2 + 40);
+        }
+
+        // Initial setup
+        drawBackground();
+        drawBird();
+        updateCurrentWordDisplay();
+    </script>
+</body>
+</html>

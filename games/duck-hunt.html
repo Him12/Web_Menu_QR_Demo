@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Duck Hunt - TheVisuplate Game Arcade</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #6a11cb;
+            --secondary: #2575fc;
+            --accent: #ff5722;
+            --light: #ffffff;
+            --dark: #212529;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --info: #17a2b8;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: var(--light);
+            min-height: 100vh;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            width: 100%;
+            padding: 20px 0;
+        }
+
+        .header-content {
+            max-width: 1300px;
+            margin: auto;
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .brand-link {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+            color: var(--light);
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            background: rgba(255, 255, 255, 0.25);
+            padding: 10px 22px;
+            border-radius: 12px;
+            font-weight: bold;
+        }
+
+        .brand-text h1 {
+            font-size: 2.4rem;
+            margin: 0;
+        }
+
+        .brand-text p {
+            font-size: 1.1rem;
+            opacity: 0.85;
+            margin-top: 3px;
+        }
+
+        .game-screen {
+            position: relative;
+            width: 100%;
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .back-btn {
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .game-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .duck-container {
+            position: relative;
+            width: 600px;
+            height: 400px;
+            background: #87CEEB;
+            margin: 20px 0;
+            cursor: crosshair;
+            overflow: hidden;
+        }
+
+        .duck {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: #FF5722;
+            border-radius: 50% 50% 40% 40%;
+            transition: transform 0.5s;
+        }
+
+        .duck::before {
+            content: '';
+            position: absolute;
+            width: 15px;
+            height: 30px;
+            background: #FF5722;
+            top: -15px;
+            left: 17px;
+            border-radius: 50%;
+        }
+
+        .game-controls {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-warning {
+            background: var(--warning);
+            color: var(--dark);
+        }
+
+        .stats {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .stat-box {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            min-width: 120px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        .instructions {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            max-width: 600px;
+        }
+
+        .instructions h3 {
+            margin-bottom: 10px;
+            color: var(--warning);
+        }
+
+        .instructions ul {
+            text-align: left;
+            padding-left: 20px;
+        }
+
+        .instructions li {
+            margin-bottom: 8px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .game-header {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+
+            .game-header h2 {
+                font-size: 1.5rem;
+            }
+
+            .stats {
+                justify-content: center;
+            }
+
+            .duck-container {
+                width: 100%;
+                max-width: 500px;
+                height: 300px;
+            }
+
+            .back-btn {
+                width: 100%;
+                justify-content: center;
+                font-size: 1rem;
+            }
+
+            .game-controls {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .btn {
+                width: 100%;
+                padding: 12px;
+                font-size: 1.1rem;
+            }
+
+            .instructions {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-content">
+                <div class="brand">
+                    <a href="../index.html" class="brand-link">
+                        <div class="logo">Home</div>
+                        <div class="brand-text">
+                            <h1>TheVisuplate Game Arcade</h1>
+                            <p>Exciting Games - All in One Place!</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <div class="game-screen">
+            <div class="game-header">
+                <a href="games.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Menu</a>
+                <h2>Duck Hunt</h2>
+                <div class="stats">
+                    <div class="stat-box">
+                        <div class="stat-label">Score</div>
+                        <div class="stat-value" id="duck-score">0</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">Ducks</div>
+                        <div class="stat-value" id="duck-count">0</div>
+                    </div>
+                </div>
+            </div>
+            <div class="game-content">
+                <div class="duck-container" id="duck-container"></div>
+                <div class="game-controls">
+                    <button class="btn btn-primary" id="duck-start">Start Game</button>
+                    <button class="btn btn-warning" id="duck-restart">Restart</button>
+                </div>
+                <div class="instructions">
+                    <h3>How to Play</h3>
+                    <ul>
+                        <li>Click on ducks as they fly across the screen</li>
+                        <li>Each duck gives you 10 points</li>
+                        <li>Ducks move faster as you progress</li>
+                        <li>Try to hit as many ducks as possible!</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>TheVisuplate Game Arcade &copy;</p>
+        </footer>
+    </div>
+
+    <script>
+        const container = document.getElementById('duck-container');
+        const startBtn = document.getElementById('duck-start');
+        const restartBtn = document.getElementById('duck-restart');
+        const scoreDisplay = document.getElementById('duck-score');
+        const countDisplay = document.getElementById('duck-count');
+
+        let score = 0;
+        let duckCount = 0;
+        let gameActive = false;
+        let gameInterval;
+        let duckInterval;
+
+        function startGame() {
+            if (gameActive) return;
+
+            gameActive = true;
+            score = 0;
+            duckCount = 0;
+            scoreDisplay.textContent = score;
+            countDisplay.textContent = duckCount;
+
+            container.innerHTML = '';
+
+            gameInterval = setInterval(() => {
+                // Game runs for 30 seconds
+            }, 30000);
+
+            duckInterval = setInterval(spawnDuck, 1500);
+
+            setTimeout(endGame, 30000);
+        }
+
+        function spawnDuck() {
+            if (!gameActive) return;
+
+            const duck = document.createElement('div');
+            duck.className = 'duck';
+
+            duck.style.left = `${Math.random() * (container.offsetWidth - 50)}px`;
+            duck.style.bottom = '0px';
+
+            duck.addEventListener('click', () => shootDuck(duck));
+
+            container.appendChild(duck);
+            duckCount++;
+            countDisplay.textContent = duckCount;
+
+            let position = 0;
+            const flyInterval = setInterval(() => {
+                if (!gameActive || !duck.parentNode) {
+                    clearInterval(flyInterval);
+                    return;
+                }
+
+                position += 2;
+                duck.style.bottom = `${position}px`;
+
+                if (position > container.offsetHeight) {
+                    clearInterval(flyInterval);
+                    if (duck.parentNode) {
+                        duck.parentNode.removeChild(duck);
+                        duckCount--;
+                        countDisplay.textContent = duckCount;
+                    }
+                }
+            }, 50);
+        }
+
+        function shootDuck(duck) {
+            if (!gameActive) return;
+
+            duck.style.background = '#FF0000';
+            setTimeout(() => {
+                if (duck.parentNode) {
+                    duck.parentNode.removeChild(duck);
+                    duckCount--;
+                    score += 10;
+                    scoreDisplay.textContent = score;
+                    countDisplay.textContent = duckCount;
+                }
+            }, 200);
+        }
+
+        function endGame() {
+            gameActive = false;
+            clearInterval(gameInterval);
+            clearInterval(duckInterval);
+
+            container.innerHTML = '';
+
+            alert(`Game Over! You shot ${score / 10} ducks and scored ${score} points!`);
+        }
+
+        startBtn.addEventListener('click', startGame);
+        restartBtn.addEventListener('click', startGame);
+    </script>
+</body>
+</html>

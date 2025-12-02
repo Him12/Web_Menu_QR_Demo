@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Puzzle Game - TheVisuplate Game Arcade</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #6a11cb;
+            --secondary: #2575fc;
+            --accent: #ff5722;
+            --light: #ffffff;
+            --dark: #212529;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --info: #17a2b8;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: var(--light);
+            min-height: 100vh;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            width: 100%;
+            padding: 20px 0;
+        }
+
+        .header-content {
+            max-width: 1300px;
+            margin: auto;
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .brand-link {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+            color: var(--light);
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            background: rgba(255, 255, 255, 0.25);
+            padding: 10px 22px;
+            border-radius: 12px;
+            font-weight: bold;
+        }
+
+        .brand-text h1 {
+            font-size: 2.4rem;
+            margin: 0;
+        }
+
+        .brand-text p {
+            font-size: 1.1rem;
+            opacity: 0.85;
+            margin-top: 3px;
+        }
+
+        .game-screen {
+            position: relative;
+            width: 100%;
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .back-btn {
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .game-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .puzzle-board {
+            display: grid;
+            grid-template-columns: repeat(4, 80px);
+            grid-gap: 2px;
+            margin: 20px 0;
+        }
+
+        .puzzle-piece {
+            width: 80px;
+            height: 80px;
+            background: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            border: 1px solid #ccc;
+        }
+
+        .puzzle-piece.empty {
+            background: transparent;
+            border: 1px dashed #ccc;
+        }
+
+        .game-controls {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-warning {
+            background: var(--warning);
+            color: var(--dark);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .stats {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .stat-box {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            min-width: 120px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        .instructions {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            max-width: 600px;
+        }
+
+        .instructions h3 {
+            margin-bottom: 10px;
+            color: var(--warning);
+        }
+
+        .instructions ul {
+            text-align: left;
+            padding-left: 20px;
+        }
+
+        .instructions li {
+            margin-bottom: 8px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .game-header {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+
+            .game-header h2 {
+                font-size: 1.5rem;
+            }
+
+            .stats {
+                justify-content: center;
+            }
+
+            .puzzle-board {
+                grid-template-columns: repeat(4, 60px);
+            }
+
+            .puzzle-piece {
+                width: 60px;
+                height: 60px;
+                font-size: 1.2rem;
+            }
+
+            .back-btn {
+                width: 100%;
+                justify-content: center;
+                font-size: 1rem;
+            }
+
+            .game-controls {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .btn {
+                width: 100%;
+                padding: 12px;
+                font-size: 1.1rem;
+            }
+
+            .instructions {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-content">
+                <div class="brand">
+                    <a href="../index.html" class="brand-link">
+                        <div class="logo">Home</div>
+                        <div class="brand-text">
+                            <h1>TheVisuplate Game Arcade</h1>
+                            <p>Exciting Games - All in One Place!</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <div class="game-screen">
+            <div class="game-header">
+                <a href="games.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Menu</a>
+                <h2>Puzzle Game</h2>
+                <div class="stats">
+                    <div class="stat-box">
+                        <div class="stat-label">Moves</div>
+                        <div class="stat-value" id="puzzle-moves">0</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">Time</div>
+                        <div class="stat-value" id="puzzle-time">0</div>
+                    </div>
+                </div>
+            </div>
+            <div class="game-content">
+                <div class="puzzle-board" id="puzzle-board"></div>
+                <div class="game-controls">
+                    <button class="btn btn-primary" id="puzzle-start">Start Game</button>
+                    <button class="btn btn-warning" id="puzzle-restart">Restart</button>
+                    <button class="btn btn-success" id="puzzle-solve">Solve</button>
+                </div>
+                <div class="instructions">
+                    <h3>How to Play</h3>
+                    <ul>
+                        <li>Click on a piece next to the empty space to move it</li>
+                        <li>Arrange the pieces in numerical order</li>
+                        <li>Try to solve the puzzle in as few moves as possible</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>TheVisuplate Game Arcade &copy;</p>
+        </footer>
+    </div>
+
+    <script>
+        const board = document.getElementById('puzzle-board');
+        const startBtn = document.getElementById('puzzle-start');
+        const restartBtn = document.getElementById('puzzle-restart');
+        const solveBtn = document.getElementById('puzzle-solve');
+        const movesDisplay = document.getElementById('puzzle-moves');
+        const timeDisplay = document.getElementById('puzzle-time');
+
+        let moves = 0;
+        let time = 0;
+        let gameActive = false;
+        let timerInterval;
+        let puzzle = [];
+
+        function initPuzzle() {
+            puzzle = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0];
+
+            for (let i = 0; i < 1000; i++) {
+                const emptyIndex = puzzle.indexOf(0);
+                const possibleMoves = getPossibleMoves(emptyIndex);
+                const randomMove = possibleMoves[Math.floor(Math.random() * possibleMoves.length)];
+                swapPieces(emptyIndex, randomMove);
+            }
+
+            renderPuzzle();
+        }
+
+        function getPossibleMoves(emptyIndex) {
+            const moves = [];
+            const row = Math.floor(emptyIndex / 4);
+            const col = emptyIndex % 4;
+
+            if (row > 0) moves.push(emptyIndex - 4);
+            if (row < 3) moves.push(emptyIndex + 4);
+            if (col > 0) moves.push(emptyIndex - 1);
+            if (col < 3) moves.push(emptyIndex + 1);
+
+            return moves;
+        }
+
+        function swapPieces(index1, index2) {
+            const temp = puzzle[index1];
+            puzzle[index1] = puzzle[index2];
+            puzzle[index2] = temp;
+        }
+
+        function renderPuzzle() {
+            board.innerHTML = '';
+
+            for (let i = 0; i < 16; i++) {
+                const piece = document.createElement('div');
+                piece.className = 'puzzle-piece';
+
+                if (puzzle[i] !== 0) {
+                    piece.textContent = puzzle[i];
+                    piece.addEventListener('click', () => movePiece(i));
+                } else {
+                    piece.className += ' empty';
+                }
+
+                board.appendChild(piece);
+            }
+        }
+
+        function movePiece(index) {
+            if (!gameActive) return;
+
+            const emptyIndex = puzzle.indexOf(0);
+            const possibleMoves = getPossibleMoves(emptyIndex);
+
+            if (possibleMoves.includes(index)) {
+                swapPieces(emptyIndex, index);
+                moves++;
+                movesDisplay.textContent = moves;
+                renderPuzzle();
+
+                if (isPuzzleSolved()) {
+                    endGame();
+                }
+            }
+        }
+
+        function isPuzzleSolved() {
+            for (let i = 0; i < 15; i++) {
+                if (puzzle[i] !== i + 1) {
+                    return false;
+                }
+            }
+            return puzzle[15] === 0;
+        }
+
+        function startGame() {
+            if (gameActive) return;
+
+            gameActive = true;
+            moves = 0;
+            time = 0;
+            movesDisplay.textContent = moves;
+            timeDisplay.textContent = time;
+
+            initPuzzle();
+
+            timerInterval = setInterval(() => {
+                time++;
+                timeDisplay.textContent = time;
+            }, 1000);
+        }
+
+        function endGame() {
+            gameActive = false;
+            clearInterval(timerInterval);
+
+            alert(`Congratulations! You solved the puzzle in ${moves} moves and ${time} seconds!`);
+        }
+
+        function solvePuzzle() {
+            if (!gameActive) return;
+
+            puzzle = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0];
+            renderPuzzle();
+            endGame();
+        }
+
+        startBtn.addEventListener('click', startGame);
+        restartBtn.addEventListener('click', startGame);
+        solveBtn.addEventListener('click', solvePuzzle);
+
+        initPuzzle();
+    </script>
+</body>
+</html>

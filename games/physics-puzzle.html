@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Physics Puzzle - TheVisuplate Game Arcade</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #6a11cb;
+            --secondary: #2575fc;
+            --accent: #ff5722;
+            --light: #ffffff;
+            --dark: #212529;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --info: #17a2b8;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: var(--light);
+            min-height: 100vh;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            width: 100%;
+            padding: 20px 0;
+        }
+
+        .header-content {
+            max-width: 1300px;
+            margin: auto;
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .brand-link {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+            color: var(--light);
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            background: rgba(255, 255, 255, 0.25);
+            padding: 10px 22px;
+            border-radius: 12px;
+            font-weight: bold;
+        }
+
+        .brand-text h1 {
+            font-size: 2.4rem;
+            margin: 0;
+        }
+
+        .brand-text p {
+            font-size: 1.1rem;
+            opacity: 0.85;
+            margin-top: 3px;
+        }
+
+        .game-screen {
+            position: relative;
+            width: 100%;
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .back-btn {
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .game-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .physics-container {
+            position: relative;
+            width: 600px;
+            height: 400px;
+            background: #87CEEB;
+            margin: 20px 0;
+        }
+
+        .physics-object {
+            position: absolute;
+            background: #FF5722;
+            border-radius: 5px;
+            cursor: move;
+        }
+
+        .game-controls {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-warning {
+            background: var(--warning);
+            color: var(--dark);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .stats {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .stat-box {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            min-width: 120px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        .instructions {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            max-width: 600px;
+        }
+
+        .instructions h3 {
+            margin-bottom: 10px;
+            color: var(--warning);
+        }
+
+        .instructions ul {
+            text-align: left;
+            padding-left: 20px;
+        }
+
+        .instructions li {
+            margin-bottom: 8px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .game-header {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+
+            .game-header h2 {
+                font-size: 1.5rem;
+            }
+
+            .stats {
+                justify-content: center;
+            }
+
+            .physics-container {
+                width: 100%;
+                max-width: 500px;
+                height: 300px;
+            }
+
+            .back-btn {
+                width: 100%;
+                justify-content: center;
+                font-size: 1rem;
+            }
+
+            .game-controls {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .btn {
+                width: 100%;
+                padding: 12px;
+                font-size: 1.1rem;
+            }
+
+            .instructions {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-content">
+                <div class="brand">
+                    <a href="../index.html" class="brand-link">
+                        <div class="logo">Home</div>
+                        <div class="brand-text">
+                            <h1>TheVisuplate Game Arcade</h1>
+                            <p>Exciting Games - All in One Place!</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <div class="game-screen">
+            <div class="game-header">
+                <a href="games.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Menu</a>
+                <h2>Physics Puzzle</h2>
+                <div class="stats">
+                    <div class="stat-box">
+                        <div class="stat-label">Level</div>
+                        <div class="stat-value" id="physics-level">1</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">Moves</div>
+                        <div class="stat-value" id="physics-moves">0</div>
+                    </div>
+                </div>
+            </div>
+            <div class="game-content">
+                <div class="physics-container" id="physics-container"></div>
+                <div class="game-controls">
+                    <button class="btn btn-primary" id="physics-start">Start Level</button>
+                    <button class="btn btn-warning" id="physics-restart">Restart</button>
+                    <button class="btn btn-success" id="physics-next">Next Level</button>
+                </div>
+                <div class="instructions">
+                    <h3>How to Play</h3>
+                    <ul>
+                        <li>Drag and drop objects to solve the puzzle</li>
+                        <li>Use physics to reach the target</li>
+                        <li>Complete each level with the fewest moves</li>
+                        <li>Think creatively to solve challenges!</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>TheVisuplate Game Arcade &copy;</p>
+        </footer>
+    </div>
+
+    <script>
+        const container = document.getElementById('physics-container');
+        const startBtn = document.getElementById('physics-start');
+        const restartBtn = document.getElementById('physics-restart');
+        const nextBtn = document.getElementById('physics-next');
+        const levelDisplay = document.getElementById('physics-level');
+        const movesDisplay = document.getElementById('physics-moves');
+
+        let level = 1;
+        let moves = 0;
+        let gameActive = false;
+        let objects = [];
+
+        function startLevel() {
+            if (gameActive) return;
+
+            gameActive = true;
+            moves = 0;
+            movesDisplay.textContent = moves;
+            levelDisplay.textContent = level;
+
+            container.innerHTML = '';
+            objects = [];
+
+            if (level === 1) {
+                createLevel1();
+            } else if (level === 2) {
+                createLevel2();
+            } else {
+                createLevel3();
+            }
+        }
+
+        function createLevel1() {
+            const target = document.createElement('div');
+            target.className = 'physics-object';
+            target.style.width = '100px';
+            target.style.height = '20px';
+            target.style.background = '#4CAF50';
+            target.style.left = '250px';
+            target.style.top = '350px';
+            container.appendChild(target);
+
+            const object = document.createElement('div');
+            object.className = 'physics-object';
+            object.style.width = '80px';
+            object.style.height = '80px';
+            object.style.left = '50px';
+            object.style.top = '50px';
+            makeDraggable(object);
+            objects.push(object);
+            container.appendChild(object);
+        }
+
+        function createLevel2() {
+            const target1 = document.createElement('div');
+            target1.className = 'physics-object';
+            target1.style.width = '100px';
+            target1.style.height = '20px';
+            target1.style.background = '#4CAF50';
+            target1.style.left = '150px';
+            target1.style.top = '350px';
+            container.appendChild(target1);
+
+            const target2 = document.createElement('div');
+            target2.className = 'physics-object';
+            target2.style.width = '100px';
+            target2.style.height = '20px';
+            target2.style.background = '#4CAF50';
+            target2.style.left = '350px';
+            target2.style.top = '350px';
+            container.appendChild(target2);
+
+            const object1 = document.createElement('div');
+            object1.className = 'physics-object';
+            object1.style.width = '120px';
+            object1.style.height = '20px';
+            object1.style.left = '50px';
+            object1.style.top = '50px';
+            makeDraggable(object1);
+            objects.push(object1);
+            container.appendChild(object1);
+
+            const object2 = document.createElement('div');
+            object2.className = 'physics-object';
+            object2.style.width = '80px';
+            object2.style.height = '80px';
+            object2.style.left = '50px';
+            object2.style.top = '150px';
+            makeDraggable(object2);
+            objects.push(object2);
+            container.appendChild(object2);
+        }
+
+        function createLevel3() {
+            const target = document.createElement('div');
+            target.className = 'physics-object';
+            target.style.width = '100px';
+            target.style.height = '20px';
+            target.style.background = '#4CAF50';
+            target.style.left = '250px';
+            target.style.top = '350px';
+            container.appendChild(target);
+
+            const objectsData = [
+                { width: 100, height: 20, left: 50, top: 50 },
+                { width: 20, height: 100, left: 50, top: 100 },
+                { width: 80, height: 80, left: 50, top: 200 },
+                { width: 120, height: 20, left: 200, top: 50 }
+            ];
+
+            objectsData.forEach(data => {
+                const object = document.createElement('div');
+                object.className = 'physics-object';
+                object.style.width = `${data.width}px`;
+                object.style.height = `${data.height}px`;
+                object.style.left = `${data.left}px`;
+                object.style.top = `${data.top}px`;
+                makeDraggable(object);
+                objects.push(object);
+                container.appendChild(object);
+            });
+        }
+
+        function makeDraggable(element) {
+            let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+
+            element.onmousedown = dragMouseDown;
+
+            function dragMouseDown(e) {
+                if (!gameActive) return;
+
+                e = e || window.event;
+                e.preventDefault();
+
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+
+                document.onmouseup = closeDragElement;
+                document.onmousemove = elementDrag;
+
+                moves++;
+                movesDisplay.textContent = moves;
+            }
+
+            function elementDrag(e) {
+                e = e || window.event;
+                e.preventDefault();
+
+                pos1 = pos3 - e.clientX;
+                pos2 = pos4 - e.clientY;
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+
+                element.style.top = (element.offsetTop - pos2) + "px";
+                element.style.left = (element.offsetLeft - pos1) + "px";
+            }
+
+            function closeDragElement() {
+                document.onmouseup = null;
+                document.onmousemove = null;
+
+                checkSolution();
+            }
+        }
+
+        function checkSolution() {
+            let solved = true;
+
+            for (const object of objects) {
+                const rect = object.getBoundingClientRect();
+                const containerRect = container.getBoundingClientRect();
+
+                if (rect.bottom < containerRect.bottom - 50) {
+                    solved = false;
+                    break;
+                }
+            }
+
+            if (solved) {
+                endLevel();
+            }
+        }
+
+        function endLevel() {
+            gameActive = false;
+            alert(`Level ${level} completed in ${moves} moves!`);
+
+            if (level < 3) {
+                nextBtn.disabled = false;
+            } else {
+                alert('Congratulations! You completed all levels!');
+            }
+        }
+
+        function nextLevel() {
+            level++;
+            nextBtn.disabled = true;
+            startLevel();
+        }
+
+        startBtn.addEventListener('click', startLevel);
+        restartBtn.addEventListener('click', startLevel);
+        nextBtn.addEventListener('click', nextLevel);
+    </script>
+</body>
+</html>

@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asteroids - TheVisuplate Game Arcade</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #6a11cb;
+            --secondary: #2575fc;
+            --accent: #ff5722;
+            --light: #ffffff;
+            --dark: #212529;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --info: #17a2b8;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: var(--light);
+            min-height: 100vh;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            width: 100%;
+            padding: 20px 0;
+        }
+
+        .header-content {
+            max-width: 1300px;
+            margin: auto;
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .brand-link {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+            color: var(--light);
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            background: rgba(255, 255, 255, 0.25);
+            padding: 10px 22px;
+            border-radius: 12px;
+            font-weight: bold;
+        }
+
+        .brand-text h1 {
+            font-size: 2.4rem;
+            margin: 0;
+        }
+
+        .brand-text p {
+            font-size: 1.1rem;
+            opacity: 0.85;
+            margin-top: 3px;
+        }
+
+        .game-screen {
+            position: relative;
+            width: 100%;
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .back-btn {
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .game-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #asteroids-canvas {
+            background: #000;
+            border: 1px solid #333;
+            border-radius: 10px;
+        }
+
+        .game-controls {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-warning {
+            background: var(--warning);
+            color: var(--dark);
+        }
+
+        .stats {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .stat-box {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            min-width: 120px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        .instructions {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            max-width: 600px;
+        }
+
+        .instructions h3 {
+            margin-bottom: 10px;
+            color: var(--warning);
+        }
+
+        .instructions ul {
+            text-align: left;
+            padding-left: 20px;
+        }
+
+        .instructions li {
+            margin-bottom: 8px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .game-header {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+
+            .game-header h2 {
+                font-size: 1.5rem;
+            }
+
+            .stats {
+                justify-content: center;
+            }
+
+            #asteroids-canvas {
+                width: 100% !important;
+                height: auto !important;
+            }
+
+            .back-btn {
+                width: 100%;
+                justify-content: center;
+                font-size: 1rem;
+            }
+
+            .game-controls {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .btn {
+                width: 100%;
+                padding: 12px;
+                font-size: 1.1rem;
+            }
+
+            .instructions {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-content">
+                <div class="brand">
+                    <a href="../index.html" class="brand-link">
+                        <div class="logo">Home</div>
+                        <div class="brand-text">
+                            <h1>TheVisuplate Game Arcade</h1>
+                            <p>Exciting Games - All in One Place!</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <div class="game-screen">
+            <div class="game-header">
+                <a href="games.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Menu</a>
+                <h2>Asteroids</h2>
+                <div class="stats">
+                    <div class="stat-box">
+                        <div class="stat-label">Score</div>
+                        <div class="stat-value" id="asteroids-score">0</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">Level</div>
+                        <div class="stat-value" id="asteroids-level">1</div>
+                    </div>
+                </div>
+            </div>
+            <div class="game-content">
+                <canvas id="asteroids-canvas" width="800" height="600"></canvas>
+                <div class="game-controls">
+                    <button class="btn btn-primary" id="asteroids-start">Start Game</button>
+                    <button class="btn btn-warning" id="asteroids-restart">Restart</button>
+                </div>
+                <div class="instructions">
+                    <h3>How to Play</h3>
+                    <ul>
+                        <li>Use arrow keys to move your ship</li>
+                        <li>Press spacebar to shoot</li>
+                        <li>Destroy asteroids to earn points</li>
+                        <li>Avoid colliding with asteroids</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>TheVisuplate Game Arcade &copy;</p>
+        </footer>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('asteroids-canvas');
+        const ctx = canvas.getContext('2d');
+        const startBtn = document.getElementById('asteroids-start');
+        const restartBtn = document.getElementById('asteroids-restart');
+        const scoreDisplay = document.getElementById('asteroids-score');
+        const levelDisplay = document.getElementById('asteroids-level');
+
+        let gameActive = false;
+        let score = 0;
+        let level = 1;
+        let ship = {
+            x: canvas.width / 2,
+            y: canvas.height / 2,
+            width: 20,
+            height: 30,
+            angle: 0,
+            thrusting: false,
+            thrust: { x: 0, y: 0 }
+        };
+
+        let bullets = [];
+        let asteroids = [];
+
+        function startGame() {
+            if (gameActive) return;
+
+            gameActive = true;
+            score = 0;
+            level = 1;
+            ship.x = canvas.width / 2;
+            ship.y = canvas.height / 2;
+            ship.thrust = { x: 0, y: 0 };
+            bullets = [];
+            asteroids = [];
+
+            for (let i = 0; i < 5; i++) {
+                createAsteroid();
+            }
+
+            updateScore();
+            gameLoop();
+
+            document.addEventListener('keydown', handleKeyDown);
+            document.addEventListener('keyup', handleKeyUp);
+        }
+
+        function gameLoop() {
+            if (!gameActive) return;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            drawStars();
+
+            updateShip();
+            drawShip();
+
+            updateBullets();
+            drawBullets();
+
+            updateAsteroids();
+            drawAsteroids();
+
+            checkCollisions();
+
+            requestAnimationFrame(gameLoop);
+        }
+
+        function drawStars() {
+            ctx.fillStyle = 'white';
+            for (let i = 0; i < 50; i++) {
+                const x = Math.random() * canvas.width;
+                const y = Math.random() * canvas.height;
+                ctx.fillRect(x, y, 1, 1);
+            }
+        }
+
+        function updateShip() {
+            if (ship.thrusting) {
+                ship.thrust.x += Math.sin(ship.angle) * 0.1;
+                ship.thrust.y -= Math.cos(ship.angle) * 0.1;
+            }
+
+            ship.thrust.x *= 0.98;
+            ship.thrust.y *= 0.98;
+
+            ship.x += ship.thrust.x;
+            ship.y += ship.thrust.y;
+
+            if (ship.x < 0) ship.x = canvas.width;
+            if (ship.x > canvas.width) ship.x = 0;
+            if (ship.y < 0) ship.y = canvas.height;
+            if (ship.y > canvas.height) ship.y = 0;
+        }
+
+        function drawShip() {
+            ctx.save();
+            ctx.translate(ship.x, ship.y);
+            ctx.rotate(ship.angle);
+
+            ctx.fillStyle = 'white';
+            ctx.beginPath();
+            ctx.moveTo(0, -15);
+            ctx.lineTo(10, 15);
+            ctx.lineTo(0, 10);
+            ctx.lineTo(-10, 15);
+            ctx.closePath();
+            ctx.fill();
+
+            if (ship.thrusting) {
+                ctx.fillStyle = 'orange';
+                ctx.beginPath();
+                ctx.moveTo(0, 10);
+                ctx.lineTo(5, 15);
+                ctx.lineTo(0, 25);
+                ctx.lineTo(-5, 15);
+                ctx.closePath();
+                ctx.fill();
+            }
+
+            ctx.restore();
+        }
+
+        function updateBullets() {
+            for (let i = 0; i < bullets.length; i++) {
+                const bullet = bullets[i];
+                bullet.x += bullet.vx;
+                bullet.y += bullet.vy;
+
+                if (bullet.x < 0 || bullet.x > canvas.width || bullet.y < 0 || bullet.y > canvas.height) {
+                    bullets.splice(i, 1);
+                    i--;
+                }
+            }
+        }
+
+        function drawBullets() {
+            ctx.fillStyle = 'white';
+            for (const bullet of bullets) {
+                ctx.beginPath();
+                ctx.arc(bullet.x, bullet.y, 2, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function createAsteroid() {
+            const size = Math.random() * 30 + 20;
+            const x = Math.random() < 0.5 ? 0 : canvas.width;
+            const y = Math.random() * canvas.height;
+
+            asteroids.push({
+                x: x,
+                y: y,
+                vx: (Math.random() - 0.5) * 2,
+                vy: (Math.random() - 0.5) * 2,
+                size: size,
+                rotation: 0,
+                rotationSpeed: (Math.random() - 0.5) * 0.02
+            });
+        }
+
+        function updateAsteroids() {
+            for (let i = 0; i < asteroids.length; i++) {
+                const asteroid = asteroids[i];
+                asteroid.x += asteroid.vx;
+                asteroid.y += asteroid.vy;
+                asteroid.rotation += asteroid.rotationSpeed;
+
+                if (asteroid.x < -asteroid.size) asteroid.x = canvas.width + asteroid.size;
+                if (asteroid.x > canvas.width + asteroid.size) asteroid.x = -asteroid.size;
+                if (asteroid.y < -asteroid.size) asteroid.y = canvas.height + asteroid.size;
+                if (asteroid.y > canvas.height + asteroid.size) asteroid.y = -asteroid.size;
+            }
+
+            if (Math.random() < 0.01) {
+                createAsteroid();
+            }
+        }
+
+        function drawAsteroids() {
+            ctx.fillStyle = 'gray';
+            for (const asteroid of asteroids) {
+                ctx.save();
+                ctx.translate(asteroid.x, asteroid.y);
+                ctx.rotate(asteroid.rotation);
+
+                ctx.beginPath();
+                ctx.arc(0, 0, asteroid.size, 0, Math.PI * 2);
+                ctx.fill();
+
+                ctx.restore();
+            }
+        }
+
+        function checkCollisions() {
+            for (let i = 0; i < bullets.length; i++) {
+                const bullet = bullets[i];
+
+                for (let j = 0; j < asteroids.length; j++) {
+                    const asteroid = asteroids[j];
+
+                    const dx = bullet.x - asteroid.x;
+                    const dy = bullet.y - asteroid.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < asteroid.size) {
+                        bullets.splice(i, 1);
+                        i--;
+                        asteroids.splice(j, 1);
+                        j--;
+
+                        score += 10;
+                        updateScore();
+
+                        break;
+                    }
+                }
+            }
+
+            for (const asteroid of asteroids) {
+                const dx = ship.x - asteroid.x;
+                const dy = ship.y - asteroid.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+
+                if (distance < asteroid.size + 10) {
+                    gameOver();
+                    return;
+                }
+            }
+        }
+
+        function handleKeyDown(e) {
+            if (!gameActive) return;
+
+            switch (e.key) {
+                case 'ArrowLeft':
+                    ship.angle -= 0.1;
+                    break;
+                case 'ArrowRight':
+                    ship.angle += 0.1;
+                    break;
+                case 'ArrowUp':
+                    ship.thrusting = true;
+                    break;
+                case ' ':
+                    shoot();
+                    break;
+            }
+        }
+
+        function handleKeyUp(e) {
+            if (e.key === 'ArrowUp') {
+                ship.thrusting = false;
+            }
+        }
+
+        function shoot() {
+            bullets.push({
+                x: ship.x + Math.sin(ship.angle) * 20,
+                y: ship.y - Math.cos(ship.angle) * 20,
+                vx: Math.sin(ship.angle) * 5,
+                vy: -Math.cos(ship.angle) * 5
+            });
+        }
+
+        function updateScore() {
+            scoreDisplay.textContent = score;
+            levelDisplay.textContent = level;
+
+            if (score >= level * 100) {
+                level++;
+                levelDisplay.textContent = level;
+            }
+        }
+
+        function gameOver() {
+            gameActive = false;
+
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 36px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('Game Over!', canvas.width / 2, canvas.height / 2 - 50);
+
+            ctx.font = '24px Arial';
+            ctx.fillText(`Final Score: ${score}`, canvas.width / 2, canvas.height / 2);
+            ctx.fillText(`Level: ${level}`, canvas.width / 2, canvas.height / 2 + 40);
+
+            document.removeEventListener('keydown', handleKeyDown);
+            document.removeEventListener('keyup', handleKeyUp);
+        }
+
+        startBtn.addEventListener('click', startGame);
+        restartBtn.addEventListener('click', startGame);
+
+        drawStars();
+        drawShip();
+    </script>
+</body>
+</html>

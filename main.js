@@ -1,4 +1,24 @@
 // main.js - Premium Restaurant Menu (Favorites Removed Version, Universal Enhanced)
+// 👉 CHANGE THIS TO YOUR GOOGLE SCRIPT DEPLOYMENT URL
+const GOOGLE_SHEET_WEBHOOK = "https://script.google.com/macros/s/AKfycbyB4SqfUzLzK3NN8uS-ogVxHpkJvXN2yGQ4q3OvScxozDVkxa2N--nf6L9I6O01RvaJ_w/exec";
+
+async function sendLeadToGoogle(name, email, mobile) {
+    try {
+        await fetch(GOOGLE_SHEET_WEBHOOK, {
+            method: "POST",
+            body: JSON.stringify({
+                name,
+                email,
+                mobile,
+                source: "QR Menu"
+            }),
+            headers: { "Content-Type": "application/json" }
+        });
+    } catch (err) {
+        console.error("Error sending lead:", err);
+    }
+}
+
 class PremiumMenu {
     constructor() {
         this.MENU = {};
@@ -788,4 +808,34 @@ class PremiumMenu {
 let premiumMenu;
 document.addEventListener('DOMContentLoaded', () => {
     premiumMenu = new PremiumMenu();
+});
+
+// QR Popup Logic
+document.addEventListener("DOMContentLoaded", () => {
+
+    // If already filled earlier, do NOT show popup again
+    if (!sessionStorage.getItem("qr_data_filled")) {
+        document.getElementById("qrPopup").classList.remove("hidden");
+    }
+
+    document.getElementById("qrSubmit").addEventListener("click", async () => {
+        const name = document.getElementById("qrName").value.trim();
+        const email = document.getElementById("qrEmail").value.trim();
+        const mobile = document.getElementById("qrMobile").value.trim();
+
+        if (!name || !email || !mobile) {
+            alert("Please fill all details.");
+            return;
+        }
+
+        // Save to Google Sheets
+        await sendLeadToGoogle(name, email, mobile);
+
+        // Save session so popup does not appear again
+        sessionStorage.setItem("qr_data_filled", "true");
+
+        // Hide popup
+        document.getElementById("qrPopup").classList.add("hidden");
+    });
+
 });

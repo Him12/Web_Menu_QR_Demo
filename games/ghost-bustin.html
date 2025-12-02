@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ghost Bustin - TheVisuplate Game Arcade</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #6a11cb;
+            --secondary: #2575fc;
+            --accent: #ff5722;
+            --light: #ffffff;
+            --dark: #212529;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --info: #17a2b8;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: var(--light);
+            min-height: 100vh;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            width: 100%;
+            padding: 20px 0;
+        }
+
+        .header-content {
+            max-width: 1300px;
+            margin: auto;
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .brand-link {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+            color: var(--light);
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            background: rgba(255, 255, 255, 0.25);
+            padding: 10px 22px;
+            border-radius: 12px;
+            font-weight: bold;
+        }
+
+        .brand-text h1 {
+            font-size: 2.4rem;
+            margin: 0;
+        }
+
+        .brand-text p {
+            font-size: 1.1rem;
+            opacity: 0.85;
+            margin-top: 3px;
+        }
+
+        .game-screen {
+            position: relative;
+            width: 100%;
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .back-btn {
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .game-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ghost-board {
+            position: relative;
+            width: 600px;
+            height: 400px;
+            background: #1a1a2e;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .ghost {
+            position: absolute;
+            width: 60px;
+            height: 80px;
+            background: white;
+            border-radius: 50% 50% 0 0;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .ghost::before {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: black;
+            border-radius: 50%;
+            top: 25px;
+            left: 10px;
+        }
+
+        .ghost::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: black;
+            border-radius: 50%;
+            top: 25px;
+            right: 10px;
+        }
+
+        .game-controls {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-warning {
+            background: var(--warning);
+            color: var(--dark);
+        }
+
+        .stats {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .stat-box {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            min-width: 120px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        .instructions {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            max-width: 600px;
+        }
+
+        .instructions h3 {
+            margin-bottom: 10px;
+            color: var(--warning);
+        }
+
+        .instructions ul {
+            text-align: left;
+            padding-left: 20px;
+        }
+
+        .instructions li {
+            margin-bottom: 8px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .game-header {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+
+            .game-header h2 {
+                font-size: 1.5rem;
+            }
+
+            .stats {
+                justify-content: center;
+            }
+
+            .ghost-board {
+                width: 100%;
+                max-width: 500px;
+                height: 300px;
+            }
+
+            .back-btn {
+                width: 100%;
+                justify-content: center;
+                font-size: 1rem;
+            }
+
+            .game-controls {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .btn {
+                width: 100%;
+                padding: 12px;
+                font-size: 1.1rem;
+            }
+
+            .instructions {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-content">
+                <div class="brand">
+                    <a href="../index.html" class="brand-link">
+                        <div class="logo">Home</div>
+                        <div class="brand-text">
+                            <h1>TheVisuplate Game Arcade</h1>
+                            <p>Exciting Games - All in One Place!</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <div class="game-screen">
+            <div class="game-header">
+                <a href="games.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Menu</a>
+                <h2>Ghost Bustin'</h2>
+                <div class="stats">
+                    <div class="stat-box">
+                        <div class="stat-label">Score</div>
+                        <div class="stat-value" id="ghost-score">0</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">Ghosts</div>
+                        <div class="stat-value" id="ghost-count">0</div>
+                    </div>
+                </div>
+            </div>
+            <div class="game-content">
+                <div class="ghost-board" id="ghost-board"></div>
+                <div class="game-controls">
+                    <button class="btn btn-primary" id="ghost-start">Start Game</button>
+                    <button class="btn btn-warning" id="ghost-restart">Restart</button>
+                </div>
+                <div class="instructions">
+                    <h3>How to Play</h3>
+                    <ul>
+                        <li>Click on ghosts as they appear</li>
+                        <li>Each ghost gives you 10 points</li>
+                        <li>Ghosts disappear after a few seconds</li>
+                        <li>Try to catch as many as you can!</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>TheVisuplate Game Arcade &copy;</p>
+        </footer>
+    </div>
+
+    <script>
+        const board = document.getElementById('ghost-board');
+        const startBtn = document.getElementById('ghost-start');
+        const restartBtn = document.getElementById('ghost-restart');
+        const scoreDisplay = document.getElementById('ghost-score');
+        const countDisplay = document.getElementById('ghost-count');
+
+        let score = 0;
+        let ghostCount = 0;
+        let gameActive = false;
+        let gameInterval;
+        let ghostInterval;
+
+        function startGame() {
+            if (gameActive) return;
+
+            gameActive = true;
+            score = 0;
+            ghostCount = 0;
+            scoreDisplay.textContent = score;
+            countDisplay.textContent = ghostCount;
+
+            board.innerHTML = '';
+
+            gameInterval = setInterval(() => {
+                // Game runs for 30 seconds
+            }, 30000);
+
+            ghostInterval = setInterval(spawnGhost, 1000);
+
+            setTimeout(endGame, 30000);
+        }
+
+        function spawnGhost() {
+            if (!gameActive) return;
+
+            const ghost = document.createElement('div');
+            ghost.className = 'ghost';
+
+            const x = Math.random() * (board.offsetWidth - 60);
+            const y = Math.random() * (board.offsetHeight - 80);
+
+            ghost.style.left = `${x}px`;
+            ghost.style.top = `${y}px`;
+
+            const colors = ['#FFFFFF', '#FFCCCC', '#CCCCFF'];
+            ghost.style.background = colors[Math.floor(Math.random() * colors.length)];
+
+            ghost.addEventListener('click', () => catchGhost(ghost));
+
+            board.appendChild(ghost);
+            ghostCount++;
+            countDisplay.textContent = ghostCount;
+
+            setTimeout(() => {
+                if (ghost.parentNode) {
+                    ghost.parentNode.removeChild(ghost);
+                    ghostCount--;
+                    countDisplay.textContent = ghostCount;
+                }
+            }, 3000);
+        }
+
+        function catchGhost(ghost) {
+            if (!gameActive) return;
+
+            ghost.parentNode.removeChild(ghost);
+            score += 10;
+            ghostCount--;
+            scoreDisplay.textContent = score;
+            countDisplay.textContent = ghostCount;
+        }
+
+        function endGame() {
+            gameActive = false;
+            clearInterval(gameInterval);
+            clearInterval(ghostInterval);
+
+            board.innerHTML = '';
+
+            alert(`Game Over! You caught ${score / 10} ghosts and scored ${score} points!`);
+        }
+
+        startBtn.addEventListener('click', startGame);
+        restartBtn.addEventListener('click', startGame);
+    </script>
+</body>
+</html>

@@ -1,0 +1,92 @@
+/* game-controller.css */
+.game-controller {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 15px;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    display: none;
+}
+
+.controller-grid {
+    display: grid;
+    grid-template-areas:
+        ". up ."
+        "left down right";
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.controller-btn {
+    width: 60px;
+    height: 60px;
+    background: rgba(106, 17, 203, 0.8);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+}
+
+.controller-btn:active {
+    background: rgba(37, 117, 252, 0.9);
+    transform: scale(0.95);
+}
+
+.controller-btn.active {
+    background: rgba(255, 87, 34, 0.9);
+    transform: scale(0.9);
+}
+
+.controller-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.arrow-up { grid-area: up; }
+.arrow-left { grid-area: left; }
+.arrow-down { grid-area: down; }
+.arrow-right { grid-area: right; }
+
+.action-btn {
+    background: rgba(255, 193, 7, 0.8);
+    font-size: 1.2rem;
+}
+
+/* Show controller only on mobile */
+@media (max-width: 768px) {
+    .game-controller {
+        display: block;
+    }
+}
+
+/* Landscape orientation adjustments */
+@media (max-width: 768px) and (orientation: landscape) {
+    .game-controller {
+        bottom: 10px;
+        padding: 10px;
+    }
+    
+    .controller-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 1.2rem;
+    }
+}

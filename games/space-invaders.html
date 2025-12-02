@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space Invaders - TheVisuplate Game Arcade</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #6a11cb;
+            --secondary: #2575fc;
+            --accent: #ff5722;
+            --light: #ffffff;
+            --dark: #212529;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --info: #17a2b8;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: var(--light);
+            min-height: 100vh;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            width: 100%;
+            padding: 20px 0;
+        }
+
+        .header-content {
+            max-width: 1300px;
+            margin: auto;
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .brand-link {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+            color: var(--light);
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            background: rgba(255, 255, 255, 0.25);
+            padding: 10px 22px;
+            border-radius: 12px;
+            font-weight: bold;
+        }
+
+        .brand-text h1 {
+            font-size: 2.4rem;
+            margin: 0;
+        }
+
+        .brand-text p {
+            font-size: 1.1rem;
+            opacity: 0.85;
+            margin-top: 3px;
+        }
+
+        .game-screen {
+            position: relative;
+            width: 100%;
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .back-btn {
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .game-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #space-canvas {
+            background: #000;
+            border-radius: 10px;
+            border: 2px solid var(--light);
+        }
+
+        .game-controls {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-warning {
+            background: var(--warning);
+            color: var(--dark);
+        }
+
+        .stats {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .stat-box {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            min-width: 120px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        .instructions {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            max-width: 600px;
+        }
+
+        .instructions h3 {
+            margin-bottom: 10px;
+            color: var(--warning);
+        }
+
+        .instructions ul {
+            text-align: left;
+            padding-left: 20px;
+        }
+
+        .instructions li {
+            margin-bottom: 8px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .game-header {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+
+            .game-header h2 {
+                font-size: 1.5rem;
+            }
+
+            .stats {
+                justify-content: center;
+            }
+
+            #space-canvas {
+                width: 100% !important;
+                height: auto !important;
+            }
+
+            .back-btn {
+                width: 100%;
+                justify-content: center;
+                font-size: 1rem;
+            }
+
+            .game-controls {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .btn {
+                width: 100%;
+                padding: 12px;
+                font-size: 1.1rem;
+            }
+
+            .instructions {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-content">
+                <div class="brand">
+                    <a href="../index.html" class="brand-link">
+                        <div class="logo">Home</div>
+                        <div class="brand-text">
+                            <h1>TheVisuplate Game Arcade</h1>
+                            <p>Exciting Games - All in One Place!</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <div class="game-screen">
+            <div class="game-header">
+                <a href="games.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Menu</a>
+                <h2>Space Invaders</h2>
+                <div class="stats">
+                    <div class="stat-box">
+                        <div class="stat-label">Score</div>
+                        <div class="stat-value" id="space-score">0</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">Lives</div>
+                        <div class="stat-value" id="space-lives">3</div>
+                    </div>
+                </div>
+            </div>
+            <div class="game-content">
+                <canvas id="space-canvas" width="600" height="400"></canvas>
+                <div class="game-controls">
+                    <button class="btn btn-primary" id="space-start">Start Game</button>
+                    <button class="btn btn-warning" id="space-restart">Restart</button>
+                </div>
+                <div class="instructions">
+                    <h3>How to Play</h3>
+                    <ul>
+                        <li>Use left and right arrow keys to move your spaceship</li>
+                        <li>Press spacebar to shoot lasers</li>
+                        <li>Destroy all alien invaders before they reach you</li>
+                        <li>Each alien gives you 10 points</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>TheVisuplate Game Arcade &copy;</p>
+        </footer>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('space-canvas');
+        const ctx = canvas.getContext('2d');
+        const startBtn = document.getElementById('space-start');
+        const restartBtn = document.getElementById('space-restart');
+        const scoreDisplay = document.getElementById('space-score');
+        const livesDisplay = document.getElementById('space-lives');
+
+        let gameActive = false;
+        let score = 0;
+        let lives = 3;
+        let level = 1;
+
+        // Player spaceship
+        const player = {
+            x: canvas.width / 2 - 25,
+            y: canvas.height - 50,
+            width: 50,
+            height: 30,
+            speed: 7,
+            color: '#2196F3'
+        };
+
+        // Lasers
+        let lasers = [];
+        const laserSpeed = 8;
+
+        // Aliens
+        let aliens = [];
+        const alienRows = 3;
+        const alienCols = 8;
+        let alienSpeed = 1;
+        let alienDirection = 1;
+
+        // Alien bullets
+        let alienBullets = [];
+        const alienBulletSpeed = 3;
+
+        function initializeGame() {
+            gameActive = true;
+            score = 0;
+            lives = 3;
+            level = 1;
+            alienSpeed = 1;
+
+            scoreDisplay.textContent = score;
+            livesDisplay.textContent = lives;
+
+            lasers = [];
+            alienBullets = [];
+            createAliens();
+
+            document.addEventListener('keydown', keyDownHandler);
+            document.addEventListener('keyup', keyUpHandler);
+
+            gameLoop();
+        }
+
+        function createAliens() {
+            aliens = [];
+            for (let row = 0; row < alienRows; row++) {
+                for (let col = 0; col < alienCols; col++) {
+                    aliens.push({
+                        x: col * 60 + 50,
+                        y: row * 50 + 50,
+                        width: 40,
+                        height: 30,
+                        color: row === 0 ? '#FF5722' : row === 1 ? '#FF9800' : '#FFC107'
+                    });
+                }
+            }
+        }
+
+        function drawPlayer() {
+            ctx.fillStyle = player.color;
+            
+            // Spaceship body
+            ctx.beginPath();
+            ctx.moveTo(player.x + player.width / 2, player.y);
+            ctx.lineTo(player.x, player.y + player.height);
+            ctx.lineTo(player.x + player.width, player.y + player.height);
+            ctx.closePath();
+            ctx.fill();
+
+            // Spaceship details
+            ctx.fillStyle = '#FFEB3B';
+            ctx.fillRect(player.x + player.width / 2 - 5, player.y + 5, 10, 10);
+        }
+
+        function drawLasers() {
+            ctx.fillStyle = '#00FF00';
+            for (let laser of lasers) {
+                ctx.fillRect(laser.x, laser.y, 3, 10);
+            }
+        }
+
+        function drawAliens() {
+            for (let alien of aliens) {
+                ctx.fillStyle = alien.color;
+                ctx.beginPath();
+                ctx.arc(alien.x + alien.width / 2, alien.y + alien.height / 2, alien.width / 2, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Alien eyes
+                ctx.fillStyle = '#000';
+                ctx.beginPath();
+                ctx.arc(alien.x + alien.width / 3, alien.y + alien.height / 3, 3, 0, Math.PI * 2);
+                ctx.arc(alien.x + 2 * alien.width / 3, alien.y + alien.height / 3, 3, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function drawAlienBullets() {
+            ctx.fillStyle = '#FF0000';
+            for (let bullet of alienBullets) {
+                ctx.beginPath();
+                ctx.arc(bullet.x, bullet.y, 3, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw stars in background
+            drawStars();
+            
+            drawPlayer();
+            drawLasers();
+            drawAliens();
+            drawAlienBullets();
+            
+            // Draw score and level
+            ctx.fillStyle = '#FFFFFF';
+            ctx.font = '16px Arial';
+            ctx.fillText(`Score: ${score}`, 10, 20);
+            ctx.fillText(`Level: ${level}`, canvas.width - 80, 20);
+        }
+
+        function drawStars() {
+            ctx.fillStyle = '#FFFFFF';
+            for (let i = 0; i < 50; i++) {
+                const x = Math.random() * canvas.width;
+                const y = Math.random() * canvas.height;
+                ctx.fillRect(x, y, 1, 1);
+            }
+        }
+
+        function updateLasers() {
+            for (let i = lasers.length - 1; i >= 0; i--) {
+                lasers[i].y -= laserSpeed;
+
+                // Remove lasers that go off screen
+                if (lasers[i].y < 0) {
+                    lasers.splice(i, 1);
+                    continue;
+                }
+
+                // Check collision with aliens
+                for (let j = aliens.length - 1; j >= 0; j--) {
+                    const alien = aliens[j];
+                    if (lasers[i].x >= alien.x && lasers[i].x <= alien.x + alien.width &&
+                        lasers[i].y >= alien.y && lasers[i].y <= alien.y + alien.height) {
+                        
+                        lasers.splice(i, 1);
+                        aliens.splice(j, 1);
+                        score += 10;
+                        scoreDisplay.textContent = score;
+                        break;
+                    }
+                }
+            }
+        }
+
+        function updateAliens() {
+            let moveDown = false;
+
+            for (let alien of aliens) {
+                alien.x += alienSpeed * alienDirection;
+
+                // Check if aliens hit the edge
+                if (alien.x <= 0 || alien.x + alien.width >= canvas.width) {
+                    moveDown = true;
+                }
+
+                // Check if aliens reached the bottom
+                if (alien.y + alien.height >= player.y) {
+                    gameOver();
+                    return;
+                }
+            }
+
+            if (moveDown) {
+                alienDirection *= -1;
+                for (let alien of aliens) {
+                    alien.y += 20;
+                }
+            }
+
+            // Random alien shooting
+            if (aliens.length > 0 && Math.random() < 0.02) {
+                const shooter = aliens[Math.floor(Math.random() * aliens.length)];
+                alienBullets.push({
+                    x: shooter.x + shooter.width / 2,
+                    y: shooter.y + shooter.height,
+                    speed: alienBulletSpeed
+                });
+            }
+        }
+
+        function updateAlienBullets() {
+            for (let i = alienBullets.length - 1; i >= 0; i--) {
+                alienBullets[i].y += alienBullets[i].speed;
+
+                // Remove bullets that go off screen
+                if (alienBullets[i].y > canvas.height) {
+                    alienBullets.splice(i, 1);
+                    continue;
+                }
+
+                // Check collision with player
+                if (alienBullets[i].x >= player.x && alienBullets[i].x <= player.x + player.width &&
+                    alienBullets[i].y >= player.y && alienBullets[i].y <= player.y + player.height) {
+                    
+                    alienBullets.splice(i, 1);
+                    lives--;
+                    livesDisplay.textContent = lives;
+
+                    if (lives <= 0) {
+                        gameOver();
+                    }
+                }
+            }
+        }
+
+        function checkLevelComplete() {
+            if (aliens.length === 0) {
+                level++;
+                alienSpeed += 0.5;
+                createAliens();
+            }
+        }
+
+        function gameLoop() {
+            if (!gameActive) return;
+
+            updateLasers();
+            updateAliens();
+            updateAlienBullets();
+            checkLevelComplete();
+            draw();
+
+            requestAnimationFrame(gameLoop);
+        }
+
+        function gameOver() {
+            gameActive = false;
+            alert(`Game Over! Your final score: ${score}`);
+            
+            document.removeEventListener('keydown', keyDownHandler);
+            document.removeEventListener('keyup', keyUpHandler);
+        }
+
+        // Keyboard controls
+        let rightPressed = false;
+        let leftPressed = false;
+
+        function keyDownHandler(e) {
+            if (e.key === 'Right' || e.key === 'ArrowRight') {
+                rightPressed = true;
+            } else if (e.key === 'Left' || e.key === 'ArrowLeft') {
+                leftPressed = true;
+            } else if (e.key === ' ' && gameActive) {
+                // Spacebar - shoot laser
+                lasers.push({
+                    x: player.x + player.width / 2 - 1,
+                    y: player.y
+                });
+            }
+        }
+
+        function keyUpHandler(e) {
+            if (e.key === 'Right' || e.key === 'ArrowRight') {
+                rightPressed = false;
+            } else if (e.key === 'Left' || e.key === 'ArrowLeft') {
+                leftPressed = false;
+            }
+        }
+
+        function updatePlayer() {
+            if (rightPressed && player.x < canvas.width - player.width) {
+                player.x += player.speed;
+            } else if (leftPressed && player.x > 0) {
+                player.x -= player.speed;
+            }
+        }
+
+        // Update player position in game loop
+        const originalGameLoop = gameLoop;
+        gameLoop = function() {
+            if (!gameActive) return;
+            updatePlayer();
+            originalGameLoop();
+        };
+
+        startBtn.addEventListener('click', initializeGame);
+        restartBtn.addEventListener('click', initializeGame);
+
+        // Initial draw
+        draw();
+    </script>
+</body>
+</html>
